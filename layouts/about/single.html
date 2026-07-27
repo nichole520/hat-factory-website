@@ -1,0 +1,63 @@
+{{ define "main" }}
+
+<!-- Banner -->
+<section class="banner">
+  <div class="banner-placeholder">
+    Banner Image Placeholder
+  </div>
+  <div class="banner-content">
+    <h2 class="banner-title">Hat Factory, Quality First!</h2>
+    <p class="banner-subtitle">Your Golden Supplier for Headwear</p>
+  </div>
+</section>
+
+<!-- About Content -->
+<section class="content-section">
+  <div class="container">
+    <!-- Tabs -->
+    <div class="about-tabs">
+      {{ range $index, $tab := .Params.tabs }}
+        <button class="about-tab {{ if eq $index 0 }}active{{ end }}" data-tab="tab-{{ $index }}">{{ $tab.title }}</button>
+      {{ end }}
+    </div>
+
+    <!-- Tab Contents -->
+    {{ range $index, $tab := .Params.tabs }}
+    <div class="tab-content {{ if eq $index 0 }}active{{ end }}" id="tab-{{ $index }}">
+      <h2 class="section-title">{{ $tab.title }}</h2>
+      
+      {{ if eq $tab.type "gallery" }}
+        <div class="image-grid">
+          {{ range $tab.images }}
+          <div class="image-grid-item">
+            {{ if .src }}
+              <img src="{{ .src | relURL }}" alt="{{ .caption }}">
+            {{ else }}
+              <div class="placeholder-img">Image</div>
+            {{ end }}
+            <p>{{ .caption }}</p>
+          </div>
+          {{ end }}
+        </div>
+      {{ else }}
+        <div class="about-text">
+          {{ $tab.content | markdownify }}
+        </div>
+      {{ end }}
+    </div>
+    {{ end }}
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll('.about-tab').forEach(tab => {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.about-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      this.classList.add('active');
+      document.getElementById(this.dataset.tab).classList.add('active');
+    });
+  });
+</script>
+
+{{ end }}

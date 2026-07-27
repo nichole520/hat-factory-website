@@ -1,0 +1,33 @@
+{{ define "main" }}
+<section class="page-header">
+  <div class="container">
+    <h1>Our Products</h1>
+  </div>
+</section>
+
+<section class="category-section">
+  <div class="container">
+    <div class="category-list">
+      {{ $categories := slice 
+        (dict "name" "Baseball Hat" "url" "/products/baseball-hat/" "img" "")
+        (dict "name" "Bucket Hat" "url" "/products/bucket-hat/" "img" "")
+        (dict "name" "Trucker Hat" "url" "/products/trucker-hat/" "img" "")
+        (dict "name" "Dad Hat" "url" "/products/dad-hat/" "img" "")
+        (dict "name" "Visor Hat" "url" "/products/visor-hat/" "img" "")
+        (dict "name" "Snapback Hat" "url" "/products/snapback-hat/" "img" "")
+        (dict "name" "Beanie" "url" "/products/beanie/" "img" "")
+      }}
+      {{ range $categories }}
+      <div class="category-item">
+        <a href="{{ .url | relURL }}">
+          <div class="category-circle">
+            {{ if .img }}<img src="{{ .img | relURL }}" alt="{{ .name }}">{{ else }}Image{{ end }}
+          </div>
+          <p class="category-name">{{ .name }}</p>
+        </a>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}

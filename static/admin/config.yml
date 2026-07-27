@@ -1,0 +1,72 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "static/images"
+public_folder: "/images"
+
+collections:
+  - name: "pages"
+    label: "Pages"
+    files:
+      - label: "Home"
+        name: "home"
+        file: "content/_index.md"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Banner Title", name: "banner_title", widget: "string"}
+          - {label: "Banner Subtitle", name: "banner_subtitle", widget: "string"}
+          - label: "Categories"
+            name: "categories"
+            widget: "list"
+            fields:
+              - {label: "Name", name: "name", widget: "string"}
+              - {label: "URL", name: "url", widget: "string"}
+              - {label: "Image", name: "image", widget: "image", required: false}
+
+      - label: "About"
+        name: "about"
+        file: "content/about/index.md"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - label: "Tabs"
+            name: "tabs"
+            widget: "list"
+            fields:
+              - {label: "Tab Title", name: "title", widget: "string"}
+              - {label: "Type", name: "type", widget: "select", options: ["text", "gallery"]}
+              - {label: "Content", name: "content", widget: "markdown", required: false}
+              - label: "Images"
+                name: "images"
+                widget: "list"
+                required: false
+                fields:
+                  - {label: "Image", name: "src", widget: "image", required: false}
+                  - {label: "Caption", name: "caption", widget: "string"}
+
+      - label: "Contact"
+        name: "contact"
+        file: "content/contact/index.md"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+
+  - name: "news"
+    label: "News"
+    folder: "content/news"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Publish Date", name: "date", widget: "datetime"}
+      - {label: "Body", name: "body", widget: "markdown"}
+
+  - name: "products"
+    label: "Products"
+    folder: "content/products"
+    create: true
+    nested:
+      depth: 2
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Image", name: "image", widget: "image", required: false}
+      - {label: "Body", name: "body", widget: "markdown", required: false}

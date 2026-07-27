@@ -1,0 +1,69 @@
+baseURL = '/'
+languageCode = 'en-us'
+title = 'Hat Factory - Premium Headwear'
+
+[params]
+  description = 'Professional hat manufacturer and supplier'
+  logoText = 'HAT FACTORY'
+
+[menu]
+  [[menu.main]]
+    name = 'Home'
+    url = '/'
+    weight = 10
+  [[menu.main]]
+    name = 'About Us'
+    url = '/about/'
+    weight = 20
+  [[menu.main]]
+    name = 'News'
+    url = '/news/'
+    weight = 30
+  [[menu.main]]
+    name = 'Product'
+    url = '/products/'
+    weight = 40
+    hasChildren = true
+  [[menu.main]]
+    name = 'Baseball Hat'
+    url = '/products/baseball-hat/'
+    weight = 41
+    parent = 'Product'
+  [[menu.main]]
+    name = 'Bucket Hat'
+    url = '/products/bucket-hat/'
+    weight = 42
+    parent = 'Product'
+  [[menu.main]]
+    name = 'Trucker Hat'
+    url = '/products/trucker-hat/'
+    weight = 43
+    parent = 'Product'
+  [[menu.main]]
+    name = 'Dad Hat'
+    url = '/products/dad-hat/'
+    weight = 44
+    parent = 'Product'
+  [[menu.main]]
+    name = 'Visor Hat'
+    url = '/products/visor-hat/'
+    weight = 45
+    parent = 'Product'
+  [[menu.main]]
+    name = 'Snapback Hat'
+    url = '/products/snapback-hat/'
+    weight = 46
+    parent = 'Product'
+  [[menu.main]]
+    name = 'Beanie'
+    url = '/products/beanie/'
+    weight = 47
+    parent = 'Product'
+  [[menu.main]]
+    name = 'Contact Us'
+    url = '/contact/'
+    weight = 50
+
+[taxonomies]
+  tag = 'tags'
+  category = 'categories'

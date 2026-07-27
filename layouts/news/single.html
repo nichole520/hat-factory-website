@@ -1,0 +1,22 @@
+{{ define "main" }}
+<section class="page-header">
+  <div class="container">
+    <h1>News</h1>
+  </div>
+</section>
+
+<section class="content-section">
+  <div class="container">
+    <article class="news-article">
+      <div class="news-meta" style="margin-bottom:20px;color:#999;font-size:13px;">{{ .Date.Format "2006-01-02" }}</div>
+      <h2 style="font-size:22px;margin-bottom:20px;font-weight:normal;">{{ .Title }}</h2>
+      <div class="news-body" style="font-size:14px;line-height:1.8;color:#444;">
+        {{ .Content }}
+      </div>
+    </article>
+    <div style="margin-top:40px;">
+      <a href="{{ "/news/" | relURL }}" style="font-size:13px;color:#555;">← Back to News</a>
+    </div>
+  </div>
+</section>
+{{ end }}

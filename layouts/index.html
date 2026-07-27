@@ -1,0 +1,32 @@
+{{ define "main" }}
+
+<!-- Banner -->
+<section class="banner">
+  <div class="banner-placeholder">
+    Banner Image Placeholder
+  </div>
+  <div class="banner-content">
+    <h2 class="banner-title">{{ .Params.banner_title }}</h2>
+    <p class="banner-subtitle">{{ .Params.banner_subtitle }}</p>
+  </div>
+</section>
+
+<!-- Categories -->
+<section class="category-section">
+  <div class="container">
+    <div class="category-list">
+      {{ range .Params.categories }}
+      <div class="category-item">
+        <a href="{{ .url | relURL }}">
+          <div class="category-circle">
+            {{ if .image }}<img src="{{ .image | relURL }}" alt="{{ .name }}">{{ else }}Image{{ end }}
+          </div>
+          <p class="category-name">{{ .name }}</p>
+        </a>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</section>
+
+{{ end }}

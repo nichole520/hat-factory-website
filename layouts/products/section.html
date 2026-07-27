@@ -1,0 +1,30 @@
+{{ define "main" }}
+<section class="page-header">
+  <div class="container">
+    <h1>{{ .Title }}</h1>
+  </div>
+</section>
+
+<section class="content-section">
+  <div class="container">
+    {{ .Content }}
+    
+    {{ if .Pages }}
+    <div class="product-grid">
+      {{ range .Pages }}
+      <div class="product-item">
+        {{ if .Params.image }}
+          <img src="{{ .Params.image | relURL }}" alt="{{ .Title }}">
+        {{ else }}
+          <div class="placeholder-img">Image</div>
+        {{ end }}
+        <h3>{{ .Title }}</h3>
+      </div>
+      {{ end }}
+    </div>
+    {{ else }}
+    <p style="text-align:center;color:#999;">No products in this category yet.</p>
+    {{ end }}
+  </div>
+</section>
+{{ end }}

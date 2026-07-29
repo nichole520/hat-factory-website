@@ -12,14 +12,14 @@
     {{ if .Pages }}
     <div class="product-grid">
       {{ range .Pages }}
-      <div class="product-item">
+      <a href="{{ .RelPermalink }}" class="product-item">
         {{ if .Params.image }}
           <img src="{{ .Params.image | relURL }}" alt="{{ .Title }}">
         {{ else }}
           <div class="placeholder-img">Image</div>
         {{ end }}
         <h3>{{ .Title }}</h3>
-      </div>
+      </a>
       {{ end }}
     </div>
     {{ else }}

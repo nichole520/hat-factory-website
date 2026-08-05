@@ -1,4 +1,4 @@
 ---
-title: "Baseball Hat 1"
-image: ""
+title: Baseball hat B10C
+image: /images/baseball6.jpg
 ---

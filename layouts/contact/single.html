@@ -9,10 +9,10 @@
   <div class="container contact-grid">
     <div class="contact-info">
       <h3>Contact Information</h3>
-      <p><span class="icon">T</span> Mobile: 0086-12345678901</p>
-      <p><span class="icon">E</span> Email: sales@hatfactory.com</p>
-      <p><span class="icon">A</span> Address: Room 301, Building 6, Industry Road, District, City, China.</p>
-      <p><span class="icon">W</span> Website: www.hatfactory.com</p>
+      {{ with .Params.phone }}<p><span class="icon">T</span> Mobile: {{ . }}</p>{{ end }}
+      {{ with .Params.email }}<p><span class="icon">E</span> Email: {{ . }}</p>{{ end }}
+      {{ with .Params.address }}<p><span class="icon">A</span> Address: {{ . }}</p>{{ end }}
+      {{ with .Params.website }}<p><span class="icon">W</span> Website: {{ . }}</p>{{ end }}
     </div>
     <div class="contact-form">
       <h3>Send Inquiry</h3>

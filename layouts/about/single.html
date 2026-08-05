@@ -6,8 +6,8 @@
     Banner Image Placeholder
   </div>
   <div class="banner-content">
-    <h2 class="banner-title">Hat Factory, Quality First!</h2>
-    <p class="banner-subtitle">Your Golden Supplier for Headwear</p>
+    <h2 class="banner-title">{{ .Params.banner_title | default "Hat Factory, Quality First!" }}</h2>
+    <p class="banner-subtitle">{{ .Params.banner_subtitle | default "Your Golden Supplier for Headwear" }}</p>
   </div>
 </section>
 
@@ -16,36 +16,43 @@
   <div class="container">
     <!-- Tabs -->
     <div class="about-tabs">
-      {{ range $index, $tab := .Params.tabs }}
-        <button class="about-tab {{ if eq $index 0 }}active{{ end }}" data-tab="tab-{{ $index }}">{{ $tab.title }}</button>
-      {{ end }}
+      <button class="about-tab active" data-tab="tab-0">{{ .Params.tab1_title | default "Tab 1" }}</button>
+      <button class="about-tab" data-tab="tab-1">{{ .Params.tab2_title | default "Tab 2" }}</button>
+      <button class="about-tab" data-tab="tab-2">{{ .Params.tab3_title | default "Tab 3" }}</button>
     </div>
 
     <!-- Tab Contents -->
-    {{ range $index, $tab := .Params.tabs }}
-    <div class="tab-content {{ if eq $index 0 }}active{{ end }}" id="tab-{{ $index }}">
-      <h2 class="section-title">{{ $tab.title }}</h2>
-      
-      {{ if eq $tab.type "gallery" }}
-        <div class="image-grid">
-          {{ range $tab.images }}
-          <div class="image-grid-item">
-            {{ if .src }}
-              <img src="{{ .src | relURL }}" alt="{{ .caption }}">
-            {{ else }}
-              <div class="placeholder-img">Image</div>
-            {{ end }}
-            <p>{{ .caption }}</p>
-          </div>
+    <div class="tab-content active" id="tab-0">
+      <h2 class="section-title">{{ .Params.tab1_title | default "Tab 1" }}</h2>
+      <div class="about-text">
+        {{ .Params.tab1_content | markdownify }}
+      </div>
+    </div>
+
+    <div class="tab-content" id="tab-1">
+      <h2 class="section-title">{{ .Params.tab2_title | default "Tab 2" }}</h2>
+      <div class="about-text">
+        {{ .Params.tab2_content | markdownify }}
+      </div>
+    </div>
+
+    <div class="tab-content" id="tab-2">
+      <h2 class="section-title">{{ .Params.tab3_title | default "Tab 3" }}</h2>
+      {{ if .Params.tab3_images }}
+      <div class="image-grid">
+        {{ range .Params.tab3_images }}
+        <div class="image-grid-item">
+          {{ if .src }}
+            <img src="{{ .src | relURL }}" alt="{{ .caption }}">
+          {{ else }}
+            <div class="placeholder-img">Image</div>
           {{ end }}
+          <p>{{ .caption }}</p>
         </div>
-      {{ else }}
-        <div class="about-text">
-          {{ $tab.content | markdownify }}
-        </div>
+        {{ end }}
+      </div>
       {{ end }}
     </div>
-    {{ end }}
   </div>
 </section>
 

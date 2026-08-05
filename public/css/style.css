@@ -322,7 +322,10 @@ ul, ol {
 }
 
 .product-item {
+  display: block;
   text-align: center;
+  text-decoration: none;
+  color: inherit;
 }
 
 .product-item .placeholder-img,
@@ -350,6 +353,66 @@ ul, ol {
   font-size: 14px;
   color: #333;
   font-weight: normal;
+}
+
+/* Product Detail */
+.product-detail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  align-items: start;
+}
+
+.product-detail-image img,
+.product-detail-image .placeholder-img {
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  background-color: #1a1a1a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  font-size: 14px;
+  border: 1px solid #eee;
+}
+
+.product-detail-title {
+  font-size: 28px;
+  color: #222;
+  margin-bottom: 20px;
+  font-weight: normal;
+}
+
+.product-detail-desc {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.8;
+  margin-bottom: 30px;
+}
+
+.product-detail-desc p {
+  margin-bottom: 12px;
+}
+
+.btn-back {
+  display: inline-block;
+  padding: 10px 25px;
+  background-color: #000;
+  color: #fff;
+  font-size: 13px;
+  transition: background-color 0.3s;
+}
+
+.btn-back:hover {
+  background-color: #333;
+}
+
+@media (max-width: 768px) {
+  .product-detail {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
 }
 
 /* News List */

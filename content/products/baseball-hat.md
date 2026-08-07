@@ -1,3 +1,0 @@
----
-title: Baseball hat
----

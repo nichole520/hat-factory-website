@@ -1,5 +1,20 @@
 ---
-title: "Baseball Hat 2"
+title: "Premium Structured Baseball Hat"
 image: ""
-description: "Stylish baseball cap with embroidered logo. Breathable mesh panels keep you cool. One size fits most with adjustable buckle closure."
+description: "6-panel structured cap with pre-curved visor. Comfortable sweatband inside."
 ---
+
+## Premium Structured Baseball Hat
+
+**Model No.:** BH-02
+
+6-panel structured cap with pre-curved visor. Comfortable sweatband inside.
+
+### Product Features:
+- Premium quality material
+- Custom logo available (embroidery/print)
+- OEM & ODM welcome
+- Competitive factory price
+- Fast sample & bulk delivery
+
+Please contact us for custom orders and wholesale pricing.

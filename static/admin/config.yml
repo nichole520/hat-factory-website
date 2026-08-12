@@ -73,12 +73,77 @@ collections:
       - {label: "Publish Date", name: "date", widget: "datetime"}
       - {label: "Body", name: "body", widget: "markdown"}
 
-  - name: "products"
-    label: "Products"
-    folder: "content/products"
+  - name: "baseball-hat"
+    label: "Baseball Hat"
+    folder: "content/products/baseball-hat"
     create: true
-    nested:
-      depth: 2
+    slug: "product-{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Image", name: "image", widget: "image", required: false}
+      - {label: "Description", name: "description", widget: "text", required: false}
+      - {label: "Body", name: "body", widget: "markdown", required: false}
+
+  - name: "bucket-hat"
+    label: "Bucket Hat"
+    folder: "content/products/bucket-hat"
+    create: true
+    slug: "product-{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Image", name: "image", widget: "image", required: false}
+      - {label: "Description", name: "description", widget: "text", required: false}
+      - {label: "Body", name: "body", widget: "markdown", required: false}
+
+  - name: "trucker-hat"
+    label: "Trucker Hat"
+    folder: "content/products/trucker-hat"
+    create: true
+    slug: "product-{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Image", name: "image", widget: "image", required: false}
+      - {label: "Description", name: "description", widget: "text", required: false}
+      - {label: "Body", name: "body", widget: "markdown", required: false}
+
+  - name: "dad-hat"
+    label: "Dad Hat"
+    folder: "content/products/dad-hat"
+    create: true
+    slug: "product-{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Image", name: "image", widget: "image", required: false}
+      - {label: "Description", name: "description", widget: "text", required: false}
+      - {label: "Body", name: "body", widget: "markdown", required: false}
+
+  - name: "visor-hat"
+    label: "Visor Hat"
+    folder: "content/products/visor-hat"
+    create: true
+    slug: "product-{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Image", name: "image", widget: "image", required: false}
+      - {label: "Description", name: "description", widget: "text", required: false}
+      - {label: "Body", name: "body", widget: "markdown", required: false}
+
+  - name: "snapback-hat"
+    label: "Snapback Hat"
+    folder: "content/products/snapback-hat"
+    create: true
+    slug: "product-{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Image", name: "image", widget: "image", required: false}
+      - {label: "Description", name: "description", widget: "text", required: false}
+      - {label: "Body", name: "body", widget: "markdown", required: false}
+
+  - name: "beanie"
+    label: "Beanie"
+    folder: "content/products/beanie"
+    create: true
+    slug: "product-{{slug}}"
     fields:
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Image", name: "image", widget: "image", required: false}

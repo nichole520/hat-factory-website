@@ -18,7 +18,7 @@
       {{ end }}
       <a href="{{ .RelPermalink }}" class="product-item">
         {{ if $img }}
-          <img src="{{ $img }}" alt="{{ .Title }}">
+          <img src="{{ partial "safe-url.html" (dict "path" $img) }}" alt="{{ .Title }}">
         {{ else }}
           <div class="placeholder-img">Image</div>
         {{ end }}

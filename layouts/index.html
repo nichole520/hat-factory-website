@@ -17,9 +17,9 @@
     <div class="category-list">
       {{ range .Params.categories }}
       <div class="category-item">
-        <a href="{{ .url | absURL }}">
+        <a href="{{ partial "safe-url.html" (dict "path" .url "kind" "url") }}">
           <div class="category-circle">
-            {{ if .image }}<img src="{{ .image | absURL }}" alt="{{ .name }}">{{ else }}Image{{ end }}
+            {{ if .image }}<img src="{{ partial "safe-url.html" (dict "path" .image) }}" alt="{{ .name }}">{{ else }}Image{{ end }}
           </div>
           <p class="category-name">{{ .name }}</p>
         </a>

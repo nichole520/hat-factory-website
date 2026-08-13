@@ -1,0 +1,30 @@
+{{/* 智能路径修正 partial：避免双重前缀 / 缺失前缀
+     用法：{{ partial "safe-url.html" (dict "path" .src "kind" "rel") }}
+     kind: rel(默认) | abs | url(用于href跳转)
+*/}}
+{{- $p := .path -}}
+{{- $kind := .kind | default "rel" -}}
+{{- $basePath := strings.TrimSuffix "/" (strings.TrimPrefix "https://" (strings.TrimPrefix "http://" site.BaseURL)) -}}
+{{- $basePath = index (split $basePath "/") 1 | default "" -}}
+{{- /* 如果保存的已经是完整http(s) URL，直接原样返回 */ -}}
+{{- if or (hasPrefix $p "http://") (hasPrefix $p "https://") -}}
+  {{- $p -}}
+{{- else -}}
+  {{- /* 去掉重复前缀：/hat-factory-website/hat-factory-website/ -> /hat-factory-website/ */ -}}
+  {{- if and $basePath (hasPrefix $p (printf "/%s/%s/" $basePath $basePath)) -}}
+    {{- $p = printf "/%s/%s" $basePath (strings.TrimPrefix (printf "/%s/%s/" $basePath $basePath) $p) -}}
+  {{- end -}}
+  {{- /* 以 / 开头的绝对路径：如果已经带 basePath 前缀就直接返回，否则用 Hugo absURL/relURL 自动加前缀 */ -}}
+  {{- if hasPrefix $p "/" -}}
+    {{- if and $basePath (hasPrefix $p (printf "/%s/" $basePath)) -}}
+      {{- /* 已经带前缀 */ -}}
+      {{- if eq $kind "abs" -}}{{- $p | absURL -}}{{- else -}}{{- $p -}}{{- end -}}
+    {{- else -}}
+      {{- /* 缺前缀：交给 Hugo 函数补 */ -}}
+      {{- if or (eq $kind "url") (eq $kind "abs") -}}{{- $p | absURL -}}{{- else -}}{{- $p | relURL -}}{{- end -}}
+    {{- end -}}
+  {{- else -}}
+    {{- /* 相对路径，直接走 Hugo relURL */ -}}
+    {{- if or (eq $kind "url") (eq $kind "abs") -}}{{- $p | absURL -}}{{- else -}}{{- $p | relURL -}}{{- end -}}
+  {{- end -}}
+{{- end -}}

@@ -15,7 +15,7 @@
       </div>
     </article>
     <div style="margin-top:40px;">
-      <a href="{{ "/news/" }}" style="font-size:13px;color:#555;">← Back to News</a>
+      <a href="{{ partial "safe-url.html" (dict "path" "/news/" "kind" "url") }}" style="font-size:13px;color:#555;">← Back to News</a>
     </div>
   </div>
 </section>

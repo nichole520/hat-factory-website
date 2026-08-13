@@ -18,7 +18,7 @@
     <div class="product-detail">
       <div class="product-detail-image">
         {{ if $mainImg }}
-          <img src="{{ $mainImg }}" alt="{{ .Title }}">
+          <img src="{{ partial "safe-url.html" (dict "path" $mainImg) }}" alt="{{ .Title }}">
         {{ else }}
           <div class="placeholder-img">Image</div>
         {{ end }}
@@ -43,7 +43,7 @@
         {{ range $gallery }}
         <div class="gallery-item">
           {{ if .src }}
-            <img src="{{ .src }}" alt="{{ $.Title }}">
+            <img src="{{ partial "safe-url.html" (dict "path" .src) }}" alt="{{ $.Title }}">
           {{ else }}
             <div class="placeholder-img">Image</div>
           {{ end }}

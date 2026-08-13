@@ -1,20 +1,31 @@
 ---
-title: "Canvas Outdoor Bucket Hat"
-image: ""
-description: "Durable canvas material with chin strap. Ideal for camping and travel."
+title: "Printed Pattern Bucket Hat"
+image: "/images/1-3-.jpg"
+gallery:
+  - src: "/images/1-3-.jpg"
+  - src: "/images/1-4-.jpg"
+  - src: "/images/1-5-.jpg"
+  - src: "/images/1-6-.jpg"
+  - src: "/images/1-7-.jpg"
+  - src: "/images/1-8-.jpg"
+  - src: "/images/1-9-.jpg"
+  - src: "/images/1-1-.jpg"
+
+description: "High quality bucket hat - Model BK-04. OEM and ODM welcome, custom logo available, competitive factory price, fast sample and bulk delivery."
 ---
 
-## Canvas Outdoor Bucket Hat
+## Printed Pattern Bucket Hat
 
 **Model No.:** BK-04
 
-Durable canvas material with chin strap. Ideal for camping and travel.
+Professional bucket hat manufactured with premium materials. Suitable for daily wear, outdoor activities, and custom brand promotion.
 
 ### Product Features:
-- Premium quality material
-- Custom logo available (embroidery/print)
-- OEM & ODM welcome
-- Competitive factory price
-- Fast sample & bulk delivery
+- Premium quality construction with strict quality control
+- Custom embroidery / printed logo available
+- OEM & ODM (custom design / color / size) welcome
+- Competitive factory wholesale price
+- Fast sample & bulk production delivery
+- One size fits most / multiple sizes available on request
 
 Please contact us for custom orders and wholesale pricing.

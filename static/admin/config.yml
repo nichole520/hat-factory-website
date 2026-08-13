@@ -80,7 +80,14 @@ collections:
     slug: "product-{{slug}}"
     fields:
       - {label: "Title", name: "title", widget: "string"}
-      - {label: "Image", name: "image", widget: "image", required: false}
+      - {label: "Main Image", name: "image", widget: "image", required: false}
+      - label: "Product Gallery (Multi Images)"
+        name: "gallery"
+        widget: "list"
+        required: false
+        fields:
+          - {label: "Image", name: "src", widget: "image", required: false}
+          - {label: "Caption", name: "caption", widget: "string", required: false}
       - {label: "Description", name: "description", widget: "text", required: false}
       - {label: "Body", name: "body", widget: "markdown", required: false}
 
@@ -91,7 +98,14 @@ collections:
     slug: "product-{{slug}}"
     fields:
       - {label: "Title", name: "title", widget: "string"}
-      - {label: "Image", name: "image", widget: "image", required: false}
+      - {label: "Main Image", name: "image", widget: "image", required: false}
+      - label: "Product Gallery (Multi Images)"
+        name: "gallery"
+        widget: "list"
+        required: false
+        fields:
+          - {label: "Image", name: "src", widget: "image", required: false}
+          - {label: "Caption", name: "caption", widget: "string", required: false}
       - {label: "Description", name: "description", widget: "text", required: false}
       - {label: "Body", name: "body", widget: "markdown", required: false}
 
@@ -102,7 +116,14 @@ collections:
     slug: "product-{{slug}}"
     fields:
       - {label: "Title", name: "title", widget: "string"}
-      - {label: "Image", name: "image", widget: "image", required: false}
+      - {label: "Main Image", name: "image", widget: "image", required: false}
+      - label: "Product Gallery (Multi Images)"
+        name: "gallery"
+        widget: "list"
+        required: false
+        fields:
+          - {label: "Image", name: "src", widget: "image", required: false}
+          - {label: "Caption", name: "caption", widget: "string", required: false}
       - {label: "Description", name: "description", widget: "text", required: false}
       - {label: "Body", name: "body", widget: "markdown", required: false}
 
@@ -113,7 +134,14 @@ collections:
     slug: "product-{{slug}}"
     fields:
       - {label: "Title", name: "title", widget: "string"}
-      - {label: "Image", name: "image", widget: "image", required: false}
+      - {label: "Main Image", name: "image", widget: "image", required: false}
+      - label: "Product Gallery (Multi Images)"
+        name: "gallery"
+        widget: "list"
+        required: false
+        fields:
+          - {label: "Image", name: "src", widget: "image", required: false}
+          - {label: "Caption", name: "caption", widget: "string", required: false}
       - {label: "Description", name: "description", widget: "text", required: false}
       - {label: "Body", name: "body", widget: "markdown", required: false}
 
@@ -124,7 +152,14 @@ collections:
     slug: "product-{{slug}}"
     fields:
       - {label: "Title", name: "title", widget: "string"}
-      - {label: "Image", name: "image", widget: "image", required: false}
+      - {label: "Main Image", name: "image", widget: "image", required: false}
+      - label: "Product Gallery (Multi Images)"
+        name: "gallery"
+        widget: "list"
+        required: false
+        fields:
+          - {label: "Image", name: "src", widget: "image", required: false}
+          - {label: "Caption", name: "caption", widget: "string", required: false}
       - {label: "Description", name: "description", widget: "text", required: false}
       - {label: "Body", name: "body", widget: "markdown", required: false}
 
@@ -135,7 +170,14 @@ collections:
     slug: "product-{{slug}}"
     fields:
       - {label: "Title", name: "title", widget: "string"}
-      - {label: "Image", name: "image", widget: "image", required: false}
+      - {label: "Main Image", name: "image", widget: "image", required: false}
+      - label: "Product Gallery (Multi Images)"
+        name: "gallery"
+        widget: "list"
+        required: false
+        fields:
+          - {label: "Image", name: "src", widget: "image", required: false}
+          - {label: "Caption", name: "caption", widget: "string", required: false}
       - {label: "Description", name: "description", widget: "text", required: false}
       - {label: "Body", name: "body", widget: "markdown", required: false}
 
@@ -146,6 +188,13 @@ collections:
     slug: "product-{{slug}}"
     fields:
       - {label: "Title", name: "title", widget: "string"}
-      - {label: "Image", name: "image", widget: "image", required: false}
+      - {label: "Main Image", name: "image", widget: "image", required: false}
+      - label: "Product Gallery (Multi Images)"
+        name: "gallery"
+        widget: "list"
+        required: false
+        fields:
+          - {label: "Image", name: "src", widget: "image", required: false}
+          - {label: "Caption", name: "caption", widget: "string", required: false}
       - {label: "Description", name: "description", widget: "text", required: false}
       - {label: "Body", name: "body", widget: "markdown", required: false}

@@ -27,6 +27,30 @@
         <a href="{{ .Parent.RelPermalink }}" class="btn-back">← Back to {{ .Parent.Title }}</a>
       </div>
     </div>
+
+    {{ if .Params.gallery }}
+    <div class="product-gallery">
+      <h2 class="section-title">Product Gallery</h2>
+      <div class="gallery-grid">
+        {{ range .Params.gallery }}
+        <div class="gallery-item">
+          {{ if .src }}
+            <img src="{{ .src | relURL }}" alt="{{ with .caption }}{{ . }}{{ else }}{{ $.Title }}{{ end }}">
+          {{ else }}
+            <div class="placeholder-img">Image</div>
+          {{ end }}
+          {{ with .caption }}<p class="gallery-caption">{{ . }}</p>{{ end }}
+        </div>
+        {{ end }}
+      </div>
+    </div>
+    {{ end }}
+
+    {{ with .Content }}
+    <div class="product-detail-body">
+      {{ . }}
+    </div>
+    {{ end }}
   </div>
 </section>
 {{ end }}

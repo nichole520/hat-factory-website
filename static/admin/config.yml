@@ -81,10 +81,23 @@ collections:
     fields:
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Main Image", name: "image", widget: "image", required: false}
-      - label: "Product Gallery (Multi Images)"
+      - label: "Product Gallery (Multi Images - Upload all then Publish)"
         name: "gallery"
         widget: "list"
         required: false
+        collapsed: false
+        minimize_collapsed: false
+        label_singular: "Image"
+        summary: "{{src}}"
+        default:
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
         fields:
           - {label: "Image", name: "src", widget: "image", required: false}
           - {label: "Caption", name: "caption", widget: "string", required: false}
@@ -99,10 +112,23 @@ collections:
     fields:
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Main Image", name: "image", widget: "image", required: false}
-      - label: "Product Gallery (Multi Images)"
+      - label: "Product Gallery (Multi Images - Upload all then Publish)"
         name: "gallery"
         widget: "list"
         required: false
+        collapsed: false
+        minimize_collapsed: false
+        label_singular: "Image"
+        summary: "{{src}}"
+        default:
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
         fields:
           - {label: "Image", name: "src", widget: "image", required: false}
           - {label: "Caption", name: "caption", widget: "string", required: false}
@@ -117,10 +143,23 @@ collections:
     fields:
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Main Image", name: "image", widget: "image", required: false}
-      - label: "Product Gallery (Multi Images)"
+      - label: "Product Gallery (Multi Images - Upload all then Publish)"
         name: "gallery"
         widget: "list"
         required: false
+        collapsed: false
+        minimize_collapsed: false
+        label_singular: "Image"
+        summary: "{{src}}"
+        default:
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
         fields:
           - {label: "Image", name: "src", widget: "image", required: false}
           - {label: "Caption", name: "caption", widget: "string", required: false}
@@ -135,10 +174,23 @@ collections:
     fields:
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Main Image", name: "image", widget: "image", required: false}
-      - label: "Product Gallery (Multi Images)"
+      - label: "Product Gallery (Multi Images - Upload all then Publish)"
         name: "gallery"
         widget: "list"
         required: false
+        collapsed: false
+        minimize_collapsed: false
+        label_singular: "Image"
+        summary: "{{src}}"
+        default:
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
         fields:
           - {label: "Image", name: "src", widget: "image", required: false}
           - {label: "Caption", name: "caption", widget: "string", required: false}
@@ -153,10 +205,23 @@ collections:
     fields:
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Main Image", name: "image", widget: "image", required: false}
-      - label: "Product Gallery (Multi Images)"
+      - label: "Product Gallery (Multi Images - Upload all then Publish)"
         name: "gallery"
         widget: "list"
         required: false
+        collapsed: false
+        minimize_collapsed: false
+        label_singular: "Image"
+        summary: "{{src}}"
+        default:
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
         fields:
           - {label: "Image", name: "src", widget: "image", required: false}
           - {label: "Caption", name: "caption", widget: "string", required: false}
@@ -171,10 +236,23 @@ collections:
     fields:
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Main Image", name: "image", widget: "image", required: false}
-      - label: "Product Gallery (Multi Images)"
+      - label: "Product Gallery (Multi Images - Upload all then Publish)"
         name: "gallery"
         widget: "list"
         required: false
+        collapsed: false
+        minimize_collapsed: false
+        label_singular: "Image"
+        summary: "{{src}}"
+        default:
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
         fields:
           - {label: "Image", name: "src", widget: "image", required: false}
           - {label: "Caption", name: "caption", widget: "string", required: false}
@@ -189,10 +267,23 @@ collections:
     fields:
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Main Image", name: "image", widget: "image", required: false}
-      - label: "Product Gallery (Multi Images)"
+      - label: "Product Gallery (Multi Images - Upload all then Publish)"
         name: "gallery"
         widget: "list"
         required: false
+        collapsed: false
+        minimize_collapsed: false
+        label_singular: "Image"
+        summary: "{{src}}"
+        default:
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
+          - {src: "", caption: ""}
         fields:
           - {label: "Image", name: "src", widget: "image", required: false}
           - {label: "Caption", name: "caption", widget: "string", required: false}

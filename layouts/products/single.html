@@ -1,4 +1,12 @@
 {{ define "main" }}
+{{ $mainImg := .Params.image }}
+{{ $gallery := .Params.gallery }}
+{{ if and (not $mainImg) $gallery }}
+  {{ range first 1 $gallery }}
+    {{ if .src }}{{ $mainImg = .src }}{{ end }}
+  {{ end }}
+{{ end }}
+
 <section class="page-header">
   <div class="container">
     <h1>Product Detail</h1>
@@ -9,8 +17,8 @@
   <div class="container">
     <div class="product-detail">
       <div class="product-detail-image">
-        {{ if .Params.image }}
-          <img src="{{ .Params.image | relURL }}" alt="{{ .Title }}">
+        {{ if $mainImg }}
+          <img src="{{ $mainImg | relURL }}" alt="{{ .Title }}">
         {{ else }}
           <div class="placeholder-img">Image</div>
         {{ end }}
@@ -28,27 +36,20 @@
       </div>
     </div>
 
-    {{ if .Params.gallery }}
+    {{ if $gallery }}
     <div class="product-gallery">
       <h2 class="section-title">Product Gallery</h2>
       <div class="gallery-grid">
-        {{ range .Params.gallery }}
+        {{ range $gallery }}
         <div class="gallery-item">
           {{ if .src }}
-            <img src="{{ .src | relURL }}" alt="{{ with .caption }}{{ . }}{{ else }}{{ $.Title }}{{ end }}">
+            <img src="{{ .src | relURL }}" alt="{{ $.Title }}">
           {{ else }}
             <div class="placeholder-img">Image</div>
           {{ end }}
-          {{ with .caption }}<p class="gallery-caption">{{ . }}</p>{{ end }}
         </div>
         {{ end }}
       </div>
-    </div>
-    {{ end }}
-
-    {{ with .Content }}
-    <div class="product-detail-body">
-      {{ . }}
     </div>
     {{ end }}
   </div>

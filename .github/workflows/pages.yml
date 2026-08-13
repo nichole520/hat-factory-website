@@ -40,10 +40,14 @@ jobs:
         run: |
           hugo --gc --minify
 
-      - name: Fix paths for GitHub Pages project subpath
+      - name: Fix paths for GitHub Pages project subpath (deduplicate prefix)
         run: |
+          # 防止Hugo某些版本或插件对硬编码路径漏加前缀：
+          # 1) 去重双重前缀
+          find public -name "*.html" -type f -exec sed -i 's|/hat-factory-website/hat-factory-website/|/hat-factory-website/|g' {} +
+          # 2) 漏掉前缀的（href="/但不是/hat-factory-website/也不是http）→补前缀
           find public -name "*.html" -type f -exec sed -i 's|href="\(/[^h][^"]*\)|href="/hat-factory-website\1|g; s|href="\(/hat-factory-website\)\(/hat-factory-website\)|href="\1|g; s|src="\(/[^h][^"]*\)|src="/hat-factory-website\1|g; s|src="\(/hat-factory-website\)\(/hat-factory-website\)|src="\1|g' {} +
-          # CSS files inside admin etc may also reference assets
+          # CSS url()里补前缀
           find public -name "*.css" -type f -exec sed -i 's|url(\(/[^h][^)]*\)|url(/hat-factory-website\1|g' {} + || true
 
       - name: Upload artifact

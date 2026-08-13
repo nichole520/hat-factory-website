@@ -16,7 +16,7 @@
           {{ if .src }}{{ $img = .src }}{{ end }}
         {{ end }}
       {{ end }}
-      <a href="/hat-factory-website{{ .RelPermalink }}" class="product-item">
+      <a href="{{ .RelPermalink }}" class="product-item">
         {{ if $img }}
           <img src="{{ $img }}" alt="{{ .Title }}">
         {{ else }}

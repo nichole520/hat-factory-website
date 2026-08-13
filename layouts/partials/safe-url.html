@@ -1,30 +1,63 @@
-{{/* 智能路径修正 partial：避免双重前缀 / 缺失前缀
+{{/* 智能路径修正 partial（根因修复版）
+     Hugo 的 relURL / absURL 对 "/xxx" 这种以斜杠开头的绝对路径不会补 baseURL 的子路径！
+     所以 Decap CMS 存的 "/images/xxx.jpg" 必须我们自己手动补前缀。
      用法：{{ partial "safe-url.html" (dict "path" .src "kind" "rel") }}
-     kind: rel(默认) | abs | url(用于href跳转)
+     kind: rel(默认，返回 /hat-factory-website/xxx) | abs(返回完整URL) | url(href跳转，用abs)
 */}}
 {{- $p := .path -}}
 {{- $kind := .kind | default "rel" -}}
-{{- $basePath := strings.TrimSuffix "/" (strings.TrimPrefix "https://" (strings.TrimPrefix "http://" site.BaseURL)) -}}
-{{- $basePath = index (split $basePath "/") 1 | default "" -}}
-{{- /* 如果保存的已经是完整http(s) URL，直接原样返回 */ -}}
+
+{{- /* 1) 完整 http(s) URL 原样返回 */ -}}
 {{- if or (hasPrefix $p "http://") (hasPrefix $p "https://") -}}
   {{- $p -}}
 {{- else -}}
-  {{- /* 去掉重复前缀：/hat-factory-website/hat-factory-website/ -> /hat-factory-website/ */ -}}
-  {{- if and $basePath (hasPrefix $p (printf "/%s/%s/" $basePath $basePath)) -}}
-    {{- $p = printf "/%s/%s" $basePath (strings.TrimPrefix (printf "/%s/%s/" $basePath $basePath) $p) -}}
+  {{- /* 2) 从 site.BaseURL 中提取子路径部分：https://user.github.io/repo-name/  ->  "repo-name" */ -}}
+  {{- $u := site.BaseURL -}}
+  {{- $u = strings.TrimPrefix "https://" $u -}}
+  {{- $u = strings.TrimPrefix "http://" $u -}}
+  {{- $u = strings.TrimSuffix "/" $u -}}
+  {{- $parts := split $u "/" -}}
+  {{- $sub := "" -}}
+  {{- if gt (len $parts) 1 -}}
+    {{- $rest := slice -}}
+    {{- range $i, $v := $parts -}}
+      {{- if gt $i 0 -}}{{- $rest = $rest | append $v -}}{{- end -}}
+    {{- end -}}
+    {{- $sub = delimit $rest "/" -}}
   {{- end -}}
-  {{- /* 以 / 开头的绝对路径：如果已经带 basePath 前缀就直接返回，否则用 Hugo absURL/relURL 自动加前缀 */ -}}
+
+  {{- /* 3) 去重：如果 $p 以 /$sub/$sub/ 开头，变成 /$sub/ */ -}}
+  {{- if and $sub (hasPrefix $p (printf "/%s/%s/" $sub $sub)) -}}
+    {{- $tail := strings.TrimPrefix (printf "/%s/%s/" $sub $sub) $p -}}
+    {{- $p = printf "/%s/%s" $sub $tail -}}
+  {{- end -}}
+  {{- if and $sub (eq $p (printf "/%s/%s" $sub $sub)) -}}
+    {{- $p = printf "/%s" $sub -}}
+  {{- end -}}
+
+  {{- /* 4) 对以 "/" 开头的绝对路径：如果没有前缀就强制加前缀 */ -}}
   {{- if hasPrefix $p "/" -}}
-    {{- if and $basePath (hasPrefix $p (printf "/%s/" $basePath)) -}}
-      {{- /* 已经带前缀 */ -}}
-      {{- if eq $kind "abs" -}}{{- $p | absURL -}}{{- else -}}{{- $p -}}{{- end -}}
-    {{- else -}}
-      {{- /* 缺前缀：交给 Hugo 函数补 */ -}}
-      {{- if or (eq $kind "url") (eq $kind "abs") -}}{{- $p | absURL -}}{{- else -}}{{- $p | relURL -}}{{- end -}}
+    {{- if and $sub (not (hasPrefix $p (printf "/%s/" $sub))) -}}
+      {{- /* 缺前缀 → 手动补 */ -}}
+      {{- $p = printf "/%s%s" $sub $p -}}
     {{- end -}}
   {{- else -}}
-    {{- /* 相对路径，直接走 Hugo relURL */ -}}
-    {{- if or (eq $kind "url") (eq $kind "abs") -}}{{- $p | absURL -}}{{- else -}}{{- $p | relURL -}}{{- end -}}
+    {{- /* 相对路径：前缀补 /$sub/（如果有） */ -}}
+    {{- if $sub -}}
+      {{- $p = printf "/%s/%s" $sub $p -}}
+    {{- else -}}
+      {{- $p = printf "/%s" $p -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- /* 5) 最后按 kind 返回 */ -}}
+  {{- if or (eq $kind "abs") (eq $kind "url") -}}
+    {{- /* abs：拼完整协议+域名+子路径 */ -}}
+    {{- $scheme := "https" -}}
+    {{- if hasPrefix site.BaseURL "http://" -}}{{- $scheme = "http" -}}{{- end -}}
+    {{- $host := index $parts 0 -}}
+    {{- printf "%s://%s%s" $scheme $host $p -}}
+  {{- else -}}
+    {{- $p -}}
   {{- end -}}
 {{- end -}}

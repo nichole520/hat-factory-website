@@ -5,6 +5,14 @@
   </div>
 </section>
 
+{{ if .Params.image }}
+<section class="category-banner">
+  <div class="container category-banner-inner">
+    <img src="{{ partial "safe-url.html" (dict "path" .Params.image) }}" alt="{{ .Title }}">
+  </div>
+</section>
+{{ end }}
+
 <section class="content-section">
   <div class="container">
     {{ if .Pages }}
@@ -23,6 +31,7 @@
           <div class="placeholder-img">Image</div>
         {{ end }}
         <h3>{{ .Title }}</h3>
+        {{ with .Params.description }}<p class="product-desc">{{ . }}</p>{{ end }}
       </a>
       {{ end }}
     </div>

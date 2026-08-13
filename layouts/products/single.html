@@ -9,7 +9,7 @@
 
 <section class="page-header">
   <div class="container">
-    <h1>Product Detail</h1>
+    <h1>{{ .Title }}</h1>
   </div>
 </section>
 
@@ -24,7 +24,7 @@
         {{ end }}
       </div>
       <div class="product-detail-info">
-        <h1 class="product-detail-title">{{ .Title }}</h1>
+        <h2 class="product-detail-title">{{ .Title }}</h2>
         <div class="product-detail-desc">
           {{ if .Params.description }}
             {{ .Params.description | markdownify }}
@@ -35,6 +35,12 @@
         <a href="{{ .Parent.RelPermalink }}" class="btn-back">← Back to {{ .Parent.Title }}</a>
       </div>
     </div>
+
+    {{ with .Content }}
+    <div class="product-body">
+      {{ . }}
+    </div>
+    {{ end }}
 
     {{ if $gallery }}
     <div class="product-gallery">

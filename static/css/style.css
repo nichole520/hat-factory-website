@@ -726,3 +726,14 @@ ul, ol {
     gap: 30px;
   }
 }
+/* 分类 Banner 图 / 产品卡片描述 / 产品正文 Body —— 后台编辑后全部前台显示 */
+.category-banner { margin: 40px 0; }
+.category-banner-inner { display:flex; justify-content:center; }
+.category-banner img { max-width: 560px; width: 100%; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,.08); }
+.product-grid .product-item .product-desc { margin-top: 10px; color: #666; font-size: 13px; line-height: 1.6; }
+.product-body { margin: 60px 0; padding: 30px 0; border-top: 1px solid #eee; border-bottom: 1px solid #eee; }
+.product-body h1, .product-body h2, .product-body h3 { margin: 20px 0 12px; color: #1a1a1a; }
+.product-body p { margin: 12px 0; color: #444; font-size: 14px; line-height: 1.9; }
+.product-body ul, .product-body ol { padding-left: 24px; margin: 12px 0; }
+.product-body li { margin: 6px 0; color: #444; }
+

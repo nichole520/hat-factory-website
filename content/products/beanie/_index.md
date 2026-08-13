@@ -1,4 +1,4 @@
 ---
-title: Beanie hat
-image: /images/1-9-.jpg
+title: "Beanie"
+image: "/images/1-7-.jpg"
 ---

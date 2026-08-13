@@ -1,5 +1,6 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: nichole520/hat-factory-website
   branch: main
 
 media_folder: "static/images"

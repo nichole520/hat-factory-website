@@ -4,20 +4,23 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Content Manager</title>
+  <!-- 不加载 Netlify Identity，启用纯 GitHub Token 登录 -->
+  <script>
+    var CMS_MANUAL_INIT = true;
+  </script>
 </head>
 <body>
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   <script>
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on("init", function(user) {
-        if (!user) {
-          window.netlifyIdentity.on("login", function() {
-            document.location.href = "/admin/";
-          });
-        }
-      });
-    }
+    // 等待 CMS 加载后再初始化，跳过任何 Netlify 自动探测
+    window.addEventListener('load', function() {
+      if (window.CMS) {
+        window.CMS.init();
+      } else {
+        // 如果 CMS 还没加载好，延迟一下
+        setTimeout(function() { window.CMS && window.CMS.init(); }, 500);
+      }
+    });
   </script>
 </body>
 </html>

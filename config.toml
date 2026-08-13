@@ -1,4 +1,5 @@
-baseURL = '/'
+baseURL = 'https://nichole520.github.io/hat-factory-website/'
+canonifyURLs = true
 languageCode = 'en-us'
 title = 'Hat Factory - Premium Headwear'
 

@@ -17,9 +17,9 @@
     <div class="category-list">
       {{ range .Params.categories }}
       <div class="category-item">
-        <a href="{{ .url | relURL }}">
+        <a href="{{ .url }}">
           <div class="category-circle">
-            {{ if .image }}<img src="{{ .image | relURL }}" alt="{{ .name }}">{{ else }}Image{{ end }}
+            {{ if .image }}<img src="{{ .image }}" alt="{{ .name }}">{{ else }}Image{{ end }}
           </div>
           <p class="category-name">{{ .name }}</p>
         </a>

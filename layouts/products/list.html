@@ -19,9 +19,9 @@
       }}
       {{ range $categories }}
       <div class="category-item">
-        <a href="{{ .url | relURL }}">
+        <a href="{{ .url }}">
           <div class="category-circle">
-            {{ if .img }}<img src="{{ .img | relURL }}" alt="{{ .name }}">{{ else }}Image{{ end }}
+            {{ if .img }}<img src="{{ .img }}" alt="{{ .name }}">{{ else }}Image{{ end }}
           </div>
           <p class="category-name">{{ .name }}</p>
         </a>

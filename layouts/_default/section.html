@@ -12,9 +12,9 @@
     {{ if .Pages }}
     <div class="product-grid">
       {{ range .Pages }}
-      <a href="{{ .RelPermalink }}" class="product-item">
+      <a href="/hat-factory-website{{ .RelPermalink }}" class="product-item">
         {{ if .Params.image }}
-          <img src="{{ .Params.image | relURL }}" alt="{{ .Title }}">
+          <img src="{{ .Params.image }}" alt="{{ .Title }}">
         {{ else }}
           <div class="placeholder-img">Image</div>
         {{ end }}

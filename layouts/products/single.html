@@ -18,7 +18,7 @@
     <div class="product-detail">
       <div class="product-detail-image">
         {{ if $mainImg }}
-          <img src="{{ $mainImg | relURL }}" alt="{{ .Title }}">
+          <img src="{{ $mainImg }}" alt="{{ .Title }}">
         {{ else }}
           <div class="placeholder-img">Image</div>
         {{ end }}
@@ -32,7 +32,7 @@
             <p>No description available.</p>
           {{ end }}
         </div>
-        <a href="{{ .Parent.RelPermalink }}" class="btn-back">← Back to {{ .Parent.Title }}</a>
+        <a href="/hat-factory-website{{ .Parent.RelPermalink }}" class="btn-back">← Back to {{ .Parent.Title }}</a>
       </div>
     </div>
 
@@ -43,7 +43,7 @@
         {{ range $gallery }}
         <div class="gallery-item">
           {{ if .src }}
-            <img src="{{ .src | relURL }}" alt="{{ $.Title }}">
+            <img src="{{ .src }}" alt="{{ $.Title }}">
           {{ else }}
             <div class="placeholder-img">Image</div>
           {{ end }}

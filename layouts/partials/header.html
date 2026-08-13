@@ -1,7 +1,7 @@
 <header class="site-header">
   <div class="container header-inner">
     <div class="logo">
-      <a href="{{ "/" | relURL }}">{{ .Site.Params.logoText }}</a>
+      <a href="{{ "/" }}">{{ .Site.Params.logoText }}</a>
     </div>
     <nav class="main-nav">
       <ul>
@@ -10,15 +10,15 @@
           {{ if not .HasChildren }}
             {{ if not .Parent }}
               <li class="{{ if $currentPage.IsMenuCurrent "main" . }}active{{ end }}">
-                <a href="{{ .URL | relURL }}" class="{{ if $currentPage.IsMenuCurrent "main" . }}active{{ end }}">{{ .Name }}</a>
+                <a href="{{ .URL }}" class="{{ if $currentPage.IsMenuCurrent "main" . }}active{{ end }}">{{ .Name }}</a>
               </li>
             {{ end }}
           {{ else }}
             <li class="{{ if $currentPage.HasMenuCurrent "main" . }}active{{ end }}">
-              <a href="{{ .URL | relURL }}" class="{{ if $currentPage.HasMenuCurrent "main" . }}active{{ end }}">{{ .Name }}</a>
+              <a href="{{ .URL }}" class="{{ if $currentPage.HasMenuCurrent "main" . }}active{{ end }}">{{ .Name }}</a>
               <ul class="dropdown-menu">
                 {{ range .Children }}
-                  <li><a href="{{ .URL | relURL }}">{{ .Name }}</a></li>
+                  <li><a href="{{ .URL }}">{{ .Name }}</a></li>
                 {{ end }}
               </ul>
             </li>

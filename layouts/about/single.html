@@ -43,7 +43,7 @@
         {{ range .Params.tab3_images }}
         <div class="image-grid-item">
           {{ if .src }}
-            <img src="{{ .src | relURL }}" alt="{{ .caption }}">
+            <img src="{{ .src }}" alt="{{ .caption }}">
           {{ else }}
             <div class="placeholder-img">Image</div>
           {{ end }}

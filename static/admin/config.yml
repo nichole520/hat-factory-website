@@ -1,12 +1,9 @@
 backend:
-  name: github
-  repo: nichole520/hat-factory-website
+  name: git-gateway
   branch: main
 
 media_folder: "static/images"
 public_folder: "/images"
-
-publish_mode: editorial_workflow
 
 collections:
   - name: "pages"

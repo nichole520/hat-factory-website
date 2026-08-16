@@ -1,27 +1,27 @@
 ---
-title: "Home"
-banner_title: "Hat Factory, Quality First!"
-banner_subtitle: "Your Golden Supplier for Headwear"
+title: Home
+banner_title: Hat Factory, Quality First!
+banner_subtitle: Headwear
 categories:
-  - name: "Baseball Hat"
-    url: "/products/baseball-hat/"
-    image: "/images/1-1-.jpg"
-  - name: "Bucket Hat"
-    url: "/products/bucket-hat/"
-    image: "/images/1-2-.jpg"
-  - name: "Trucker Hat"
-    url: "/products/trucker-hat/"
-    image: "/images/1-3-.jpg"
-  - name: "Dad Hat"
-    url: "/products/dad-hat/"
-    image: "/images/1-4-.jpg"
-  - name: "Visor Hat"
-    url: "/products/visor-hat/"
-    image: "/images/1-5-.jpg"
-  - name: "Snapback Hat"
-    url: "/products/snapback-hat/"
-    image: "/images/1-6-.jpg"
-  - name: "Beanie"
-    url: "/products/beanie/"
-    image: "/images/1-7-.jpg"
+  - name: Baseball Hat
+    url: /products/baseball-hat/
+    image: /images/1-1-.jpg
+  - name: Bucket Hat
+    url: /products/bucket-hat/
+    image: /images/1-2-.jpg
+  - name: Trucker Hat
+    url: /products/trucker-hat/
+    image: /images/1-3-.jpg
+  - name: Dad Hat
+    url: /products/dad-hat/
+    image: /images/1-4-.jpg
+  - name: Visor Hat
+    url: /products/visor-hat/
+    image: /images/1-5-.jpg
+  - name: Snapback Hat
+    url: /products/snapback-hat/
+    image: /images/1-6-.jpg
+  - name: Beanie
+    url: /products/beanie/
+    image: /images/1-7-.jpg
 ---

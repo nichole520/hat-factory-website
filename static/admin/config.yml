@@ -1,6 +1,10 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: nichole520/hat-factory-website
   branch: main
+  site_url: https://nichole520.github.io/hat-factory-website/
+  base_url: https://ubiquitous-gnome-215642.netlify.app
+  auth_endpoint: auth
 
 media_folder: "static/images"
 public_folder: "/images"

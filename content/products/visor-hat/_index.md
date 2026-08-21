@@ -1,4 +1,4 @@
 ---
-title: "Visor Hat"
-image: "/images/1-5-.jpg"
+title: Visor Hat
+image: /images/9-1-.jpg
 ---

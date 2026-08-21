@@ -3,6 +3,7 @@ backend:
   repo: nichole520/hat-factory-website
   branch: main
   site_url: https://nichole520.github.io/hat-factory-website/
+  auth_endpoint: https://github.com
 
 media_folder: "static/images"
 public_folder: "/images"

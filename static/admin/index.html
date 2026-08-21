@@ -172,8 +172,9 @@
         localStorage.setItem('decap-github-token', token);
         localStorage.setItem('decap-github-username', username);
         
-        // 跳转到 CMS 主页面（使用相对路径适配 GitHub Pages 子目录）
-        window.location.href = 'cms.html';
+        // 跳转到 CMS 主页面（使用完整 URL 确保 GitHub Pages 子路径正确）
+        const basePath = window.location.pathname.replace(/index\.html?$/, '');
+        window.location.href = window.location.origin + basePath + 'cms.html';
         
       } catch (error) {
         errorDiv.textContent = '❌ ' + error.message;

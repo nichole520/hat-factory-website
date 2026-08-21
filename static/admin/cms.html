@@ -49,7 +49,7 @@
       if (confirm('确定要退出登录吗？')) {
         localStorage.removeItem('decap-github-token');
         localStorage.removeItem('decap-github-username');
-        location.href = '/admin/';
+        location.href = './';
       }
     }
 
@@ -57,7 +57,7 @@
     const username = localStorage.getItem('decap-github-username');
 
     if (!token) {
-      location.href = '/admin/';
+      location.href = './';
     } else {
       // ======== 关键：劫持 fetch，自动给 GitHub API 请求加 Token ========
       const originalFetch = window.fetch.bind(window);

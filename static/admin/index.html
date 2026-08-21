@@ -172,8 +172,8 @@
         localStorage.setItem('decap-github-token', token);
         localStorage.setItem('decap-github-username', username);
         
-        // 跳转到 CMS 主页面
-        window.location.href = '/admin/cms.html';
+        // 跳转到 CMS 主页面（使用相对路径适配 GitHub Pages 子目录）
+        window.location.href = 'cms.html';
         
       } catch (error) {
         errorDiv.textContent = '❌ ' + error.message;

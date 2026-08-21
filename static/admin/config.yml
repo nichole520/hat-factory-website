@@ -1,6 +1,8 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: nichole520/hat-factory-website
   branch: main
+  site_url: https://nichole520.github.io/hat-factory-website/
 
 media_folder: "static/images"
 public_folder: "/images"

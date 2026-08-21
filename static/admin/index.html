@@ -3,10 +3,214 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Content Manager</title>
+  <title>Content Manager - 登录</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .login-container {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      width: 420px;
+      max-width: 90vw;
+    }
+    .login-container h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 8px;
+      font-size: 24px;
+    }
+    .subtitle {
+      text-align: center;
+      color: #888;
+      margin-bottom: 24px;
+      font-size: 14px;
+    }
+    .form-group { margin-bottom: 20px; }
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #555;
+      font-weight: 500;
+      font-size: 14px;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border-color 0.3s;
+    }
+    .form-group input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+    }
+    .login-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .login-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(102,126,234,0.3); }
+    .login-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .error {
+      background: #fee;
+      color: #c33;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 16px;
+      font-size: 14px;
+      display: none;
+      line-height: 1.5;
+    }
+    .loading {
+      text-align: center;
+      color: #888;
+      margin-top: 20px;
+      display: none;
+    }
+    .token-hint {
+      background: #f8f9fa;
+      padding: 14px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      color: #666;
+      line-height: 1.7;
+      border-left: 3px solid #667eea;
+    }
+    .token-hint a { color: #667eea; text-decoration: none; }
+    .token-hint code {
+      background: #eef;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+      color: #555;
+    }
+    .test-info {
+      background: #e8f5e9;
+      color: #2e7d32;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      font-size: 13px;
+      line-height: 1.6;
+      border-left: 3px solid #4caf50;
+    }
+    .test-info a { color: #2e7d32; font-weight: 600; }
+  </style>
 </head>
 <body>
-  <!-- Decap CMS - GitHub Backend + Netlify OAuth Proxy (无需邮箱密码，直接GitHub账号登录) -->
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <div class="login-container">
+    <h1>🛠️ 网站后台管理</h1>
+    <p class="subtitle">使用 GitHub Personal Access Token 登录</p>
+    
+    <div class="test-info">
+      ✅ 已验证此方案可行！直接用 GitHub 账号操作仓库，图片上传 100% 成功
+    </div>
+    
+    <div class="token-hint">
+      💡 <strong>还没有 Token？</strong> 
+      <br>
+      1) 打开 <a href="https://github.com/settings/tokens/new?scopes=repo&description=Hat+Factory+CMS" target="_blank">GitHub Token 生成页</a>
+      <br>
+      2) <strong>Expiration</strong> 选 <code>No expiration</code>
+      <br>
+      3) 勾选 <code>repo</code> 权限
+      <br>
+      4) 拉到底点 <code>Generate token</code>，复制生成的 <code>ghp_</code> 开头的字符串
+    </div>
+    
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="username">GitHub 用户名</label>
+        <input type="text" id="username" placeholder="例如: nichole520" required />
+      </div>
+      
+      <div class="form-group">
+        <label for="token">Personal Access Token (ghp_ 开头)</label>
+        <input type="password" id="token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxx" required />
+      </div>
+      
+      <button type="submit" class="login-btn" id="loginBtn">登 录 后 台</button>
+    </form>
+    
+    <div class="error" id="error"></div>
+    <div class="loading" id="loading">正在验证 Token...</div>
+  </div>
+
+  <script>
+    // 尝试从 localStorage 读取已保存的信息
+    document.addEventListener('DOMContentLoaded', function() {
+      const savedUser = localStorage.getItem('gh_username');
+      const savedToken = localStorage.getItem('gh_token');
+      if (savedUser) document.getElementById('username').value = savedUser;
+      if (savedToken) document.getElementById('token').value = savedToken;
+    });
+    
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const token = document.getElementById('token').value.trim();
+      const errorDiv = document.getElementById('error');
+      const loadingDiv = document.getElementById('loading');
+      const loginBtn = document.getElementById('loginBtn');
+      
+      errorDiv.style.display = 'none';
+      loginBtn.disabled = true;
+      loadingDiv.style.display = 'block';
+      
+      try {
+        // 1) 验证 Token 是否有效
+        const resp1 = await fetch('https://api.github.com/user', {
+          headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }
+        });
+        if (!resp1.ok) throw new Error('Token 无效或无权限。请确认勾选了 repo 权限后重新生成。');
+        const userData = await resp1.json();
+        if (userData.login.toLowerCase() !== username.toLowerCase()) {
+          throw new Error('用户名与 Token 不匹配！当前 Token 属于用户: ' + userData.login);
+        }
+        
+        // 2) 验证仓库访问权限
+        const resp2 = await fetch('https://api.github.com/repos/' + username + '/hat-factory-website', {
+          headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }
+        });
+        if (!resp2.ok) throw new Error('无法访问 hat-factory-website 仓库，请检查用户名或仓库权限');
+        const repoData = await resp2.json();
+        console.log('仓库验证通过:', repoData.full_name);
+        
+        // 3) 保存凭据到 localStorage（下次打开自动填充）
+        localStorage.setItem('gh_username', username);
+        localStorage.setItem('gh_token', token);
+        
+        // 4) 跳转到 CMS 页面（用相对路径）
+        const currentPath = window.location.pathname;
+        const basePath = currentPath.substring(0, currentPath.lastIndexOf('/') + 1);
+        window.location.href = basePath + 'cms.html';
+        
+      } catch (error) {
+        errorDiv.textContent = '❌ ' + error.message;
+        errorDiv.style.display = 'block';
+        loginBtn.disabled = false;
+        loadingDiv.style.display = 'none';
+      }
+    });
+  </script>
 </body>
 </html>

@@ -1,0 +1,960 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>内容管理后台</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f6fa; color: #333; }
+    .app { display: flex; min-height: 100vh; }
+    .sidebar {
+      width: 280px; background: #2c3e50; color: white; padding: 20px 0; overflow-y: auto;
+      max-height: 100vh; position: sticky; top: 0;
+    }
+    .sidebar h2 { padding: 0 20px 20px; font-size: 18px; border-bottom: 1px solid #34495e; margin-bottom: 10px; }
+    .sidebar .nav-group { margin-bottom: 16px; }
+    .sidebar .nav-group-title {
+      padding: 8px 20px; font-size: 12px; color: #95a5a6; text-transform: uppercase; letter-spacing: 0.5px;
+      cursor: pointer; user-select: none;
+    }
+    .sidebar .nav-item {
+      padding: 10px 20px 10px 36px; font-size: 14px; cursor: pointer;
+      transition: background 0.2s; display: flex; align-items: center; justify-content: space-between;
+    }
+    .sidebar .nav-item:hover { background: #34495e; }
+    .sidebar .nav-item.active { background: #3498db; }
+    .sidebar .nav-item .count { font-size: 12px; background: #34495e; padding: 2px 8px; border-radius: 10px; }
+    .sidebar .nav-item.active .count { background: #2980b9; }
+    .main { flex: 1; padding: 30px 40px; overflow-y: auto; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .topbar h1 { font-size: 22px; color: #2c3e50; }
+    .user-info { display: flex; align-items: center; gap: 12px; font-size: 14px; color: #7f8c8d; }
+    .logout-btn { padding: 6px 14px; background: #e74c3c; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; }
+    .logout-btn:hover { background: #c0392b; }
+    .btn { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s; }
+    .btn-primary { background: #3498db; color: white; }
+    .btn-primary:hover { background: #2980b9; transform: translateY(-1px); }
+    .btn-success { background: #27ae60; color: white; }
+    .btn-success:hover { background: #229954; }
+    .btn-danger { background: #e74c3c; color: white; padding: 6px 14px; font-size: 13px; }
+    .btn-danger:hover { background: #c0392b; }
+    .btn-secondary { background: #95a5a6; color: white; padding: 6px 14px; font-size: 13px; }
+    .btn-secondary:hover { background: #7f8c8d; }
+    .content-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .content-header h2 { font-size: 18px; color: #2c3e50; }
+    .card { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); padding: 20px; margin-bottom: 20px; }
+    .file-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+    .file-card {
+      background: white; border-radius: 8px; padding: 16px;
+      border: 1px solid #ecf0f1; cursor: pointer; transition: all 0.2s;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .file-card:hover { border-color: #3498db; box-shadow: 0 4px 12px rgba(52,152,219,0.15); transform: translateY(-2px); }
+    .file-card img { width: 100%; height: 140px; object-fit: cover; border-radius: 6px; background: #f8f9fa; }
+    .file-card .title { font-weight: 600; color: #2c3e50; font-size: 14px; line-height: 1.4; }
+    .file-card .desc { font-size: 12px; color: #95a5a6; flex: 1; }
+    .file-card .footer { display: flex; justify-content: space-between; align-items: center; padding-top: 8px; border-top: 1px solid #ecf0f1; }
+    .file-card .date { font-size: 11px; color: #bdc3c7; }
+    .editor-overlay {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5);
+      display: none; align-items: center; justify-content: center; z-index: 9999; padding: 20px;
+    }
+    .editor-overlay.active { display: flex; }
+    .editor-panel {
+      background: white; border-radius: 10px; width: 100%; max-width: 800px; max-height: 90vh;
+      overflow-y: auto; padding: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .editor-panel h2 { margin-bottom: 20px; color: #2c3e50; }
+    .editor-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; padding-top: 20px; border-top: 1px solid #ecf0f1; }
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; margin-bottom: 6px; color: #555; font-weight: 500; font-size: 14px; }
+    .form-group input[type="text"], .form-group textarea {
+      width: 100%; padding: 10px 14px; border: 1px solid #ddd; border-radius: 6px;
+      font-size: 14px; font-family: inherit; transition: border-color 0.2s;
+    }
+    .form-group input[type="text"]:focus, .form-group textarea:focus {
+      outline: none; border-color: #3498db; box-shadow: 0 0 0 3px rgba(52,152,219,0.1);
+    }
+    .form-group textarea { min-height: 120px; resize: vertical; }
+    .image-preview {
+      width: 200px; height: 200px; border: 2px dashed #ddd; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center; background: #fafbfc;
+      overflow: hidden; margin-top: 8px; cursor: pointer; position: relative;
+    }
+    .image-preview:hover { border-color: #3498db; }
+    .image-preview img { width: 100%; height: 100%; object-fit: cover; }
+    .image-preview .placeholder { color: #bdc3c7; font-size: 13px; text-align: center; padding: 10px; }
+    .image-preview input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .toast {
+      position: fixed; top: 20px; right: 20px; padding: 14px 20px; border-radius: 8px;
+      color: white; z-index: 99999; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transform: translateX(400px); transition: transform 0.3s; font-size: 14px; max-width: 360px;
+    }
+    .toast.active { transform: translateX(0); }
+    .toast.success { background: #27ae60; }
+    .toast.error { background: #e74c3c; }
+    .loading-mask {
+      position: fixed; inset: 0; background: rgba(255,255,255,0.8);
+      display: none; align-items: center; justify-content: center; z-index: 99998;
+      flex-direction: column; gap: 12px;
+    }
+    .loading-mask.active { display: flex; }
+    .spinner {
+      width: 40px; height: 40px; border: 4px solid #ecf0f1; border-top-color: #3498db;
+      border-radius: 50%; animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .gallery-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+    .gallery-item { position: relative; }
+    .gallery-item img { width: 100%; height: 120px; object-fit: cover; border-radius: 6px; border: 1px solid #ecf0f1; }
+    .gallery-item .remove {
+      position: absolute; top: 4px; right: 4px; background: #e74c3c; color: white;
+      width: 22px; height: 22px; border-radius: 50%; border: none; cursor: pointer;
+      font-size: 14px; line-height: 1; display: flex; align-items: center; justify-content: center;
+    }
+    .gallery-add {
+      border: 2px dashed #ddd; border-radius: 6px; height: 120px;
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      color: #95a5a6; font-size: 32px; transition: all 0.2s; position: relative;
+    }
+    .gallery-add:hover { border-color: #3498db; color: #3498db; }
+    .gallery-add input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .pages-nav { margin-bottom: 4px; }
+    .pages-nav .nav-group-title { font-size: 13px; font-weight: 600; padding-left: 20px; color: #ecf0f1; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- 侧边栏 -->
+    <aside class="sidebar">
+      <h2>🎩 帽子工厂后台</h2>
+      <div id="sidebarContent"></div>
+    </aside>
+
+    <!-- 主区域 -->
+    <main class="main">
+      <div class="topbar">
+        <h1 id="pageTitle">内容管理</h1>
+        <div class="user-info">
+          <span id="userLabel">未登录</span>
+          <button class="logout-btn" onclick="doLogout()">退出</button>
+        </div>
+      </div>
+      <div id="mainContent"></div>
+    </main>
+  </div>
+
+  <!-- 编辑器弹窗 -->
+  <div class="editor-overlay" id="editorOverlay" onclick="if(event.target===this)closeEditor()">
+    <div class="editor-panel" id="editorPanel"></div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+  
+  <!-- Loading -->
+  <div class="loading-mask" id="loadingMask">
+    <div class="spinner"></div>
+    <div id="loadingText">加载中...</div>
+  </div>
+
+<script>
+// ====== 全局变量 ======
+const GH_USER = localStorage.getItem('gh_username');
+const GH_TOKEN = localStorage.getItem('gh_token');
+const GH_REPO = (GH_USER || 'nichole520') + '/hat-factory-website';
+const GH_BRANCH = 'main';
+const COLLECTION_MAP = {
+  'home':         { type: 'single',   label: '首页 Home',      file: 'content/_index.md' },
+  'about':        { type: 'single',   label: '关于 About',     file: 'content/about.md' },
+  'contact':      { type: 'single',   label: '联系 Contact',   file: 'content/contact.md' },
+  'footer':       { type: 'single',   label: '页脚 Footer',    file: 'content/footer.md' },
+  'news':         { type: 'folder',   label: '新闻 News',      folder: 'content/news',           fields: ['title','date','body'] },
+  'baseball-hat': { type: 'folder',   label: 'Baseball Hat',   folder: 'content/products/baseball-hat', fields: ['title','image','gallery','description','body'] },
+  'bucket-hat':   { type: 'folder',   label: 'Bucket Hat',     folder: 'content/products/bucket-hat',   fields: ['title','image','gallery','description','body'] },
+  'trucker-hat':  { type: 'folder',   label: 'Trucker Hat',    folder: 'content/products/trucker-hat',  fields: ['title','image','gallery','description','body'] },
+  'dad-hat':      { type: 'folder',   label: 'Dad Hat',        folder: 'content/products/dad-hat',      fields: ['title','image','gallery','description','body'] },
+  'visor-hat':    { type: 'folder',   label: 'Visor Hat',      folder: 'content/products/visor-hat',    fields: ['title','image','gallery','description','body'] },
+  'snapback-hat': { type: 'folder',   label: 'Snapback Hat',   folder: 'content/products/snapback-hat', fields: ['title','image','gallery','description','body'] },
+  'beanie':       { type: 'folder',   label: 'Beanie',         folder: 'content/products/beanie',       fields: ['title','image','gallery','description','body'] },
+};
+let currentCollection = null;
+let currentItemFile = null;
+
+// ====== 初始化 ======
+if (!GH_TOKEN) {
+  const basePath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/')+1);
+  window.location.href = basePath;
+} else {
+  document.getElementById('userLabel').textContent = '👤 ' + GH_USER;
+  renderSidebar();
+  // 默认打开首页
+  openCollection('home');
+}
+
+// ====== 侧边栏 ======
+function renderSidebar() {
+  const html = `
+    <div class="nav-group pages-nav">
+      <div class="nav-group-title">📄 单页面</div>
+      <div class="nav-item" data-key="home" onclick="openCollection('home')"><span>🏠 首页 Home</span></div>
+      <div class="nav-item" data-key="about" onclick="openCollection('about')"><span>👥 关于 About</span></div>
+      <div class="nav-item" data-key="contact" onclick="openCollection('contact')"><span>📞 联系 Contact</span></div>
+      <div class="nav-item" data-key="footer" onclick="openCollection('footer')"><span>🔻 页脚 Footer</span></div>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">📰 内容集合</div>
+      <div class="nav-item" data-key="news" onclick="openCollection('news')"><span>📰 新闻 News</span><span class="count" id="count-news">-</span></div>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">🎩 产品分类</div>
+      ${Object.keys(COLLECTION_MAP).filter(k => COLLECTION_MAP[k].type==='folder' && k!=='news').map(k => `
+        <div class="nav-item" data-key="${k}" onclick="openCollection('${k}')">
+          <span>${COLLECTION_MAP[k].label}</span><span class="count" id="count-${k}">-</span>
+        </div>`).join('')}
+    </div>
+  `;
+  document.getElementById('sidebarContent').innerHTML = html;
+  loadAllCounts();
+}
+async function loadAllCounts() {
+  for (const key of Object.keys(COLLECTION_MAP)) {
+    const c = COLLECTION_MAP[key];
+    if (c.type === 'folder') {
+      try {
+        const items = await ghListFolder(c.folder);
+        document.getElementById('count-'+key).textContent = items.filter(f => f.name.endsWith('.md')).length;
+      } catch(e) {}
+    }
+  }
+}
+
+// ====== 打开集合 ======
+async function openCollection(key) {
+  currentCollection = key;
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  document.querySelector(`.nav-item[data-key="${key}"]`)?.classList.add('active');
+  const c = COLLECTION_MAP[key];
+  document.getElementById('pageTitle').textContent = c.label;
+  showLoading('加载中...');
+  try {
+    if (c.type === 'single') {
+      const data = await ghGetContent(c.file);
+      renderSingleEditor(key, c, data);
+    } else {
+      const items = await ghListFolder(c.folder);
+      const mdFiles = items.filter(f => f.name.endsWith('.md'));
+      const entries = [];
+      for (const f of mdFiles) {
+        try {
+          const raw = await ghGetContent(f.path, true);
+          const parsed = parseFrontmatter(raw);
+          entries.push({ ...parsed, _path: f.path, _size: f.size, _sha: f.sha, _url: f.download_url });
+        } catch(e) {}
+      }
+      renderFolderList(key, c, entries);
+    }
+  } catch(e) {
+    toast('加载失败: ' + e.message, 'error');
+  }
+  hideLoading();
+}
+
+// ====== 渲染单文件编辑器 ======
+function renderSingleEditor(key, config, rawContent) {
+  const parsed = parseFrontmatter(rawContent);
+  const fields = [];
+  for (const [k, v] of Object.entries(parsed.fm)) {
+    fields.push({ name: k, value: v });
+  }
+  document.getElementById('mainContent').innerHTML = `
+    <div class="content-header">
+      <h2>${config.label} - 编辑</h2>
+      <button class="btn btn-success" onclick="saveSingle('${key}')">💾 保存到 GitHub</button>
+    </div>
+    <div class="card">
+      <div id="editorFields"></div>
+      <div style="margin-top:24px; padding-top:16px; border-top:1px solid #eee;">
+        <h3 style="margin-bottom:10px; color:#2c3e50;">正文内容 (Body)</h3>
+        <textarea id="bodyField" style="width:100%; min-height:200px; padding:12px; border:1px solid #ddd; border-radius:6px; font-family:inherit; font-size:14px;">${escapeHtml(parsed.body || '')}</textarea>
+      </div>
+    </div>
+  `;
+  renderFields(fields);
+}
+function renderFields(fields) {
+  const html = fields.map(f => renderField(f.name, f.value)).join('');
+  document.getElementById('editorFields').innerHTML = html;
+}
+function renderField(name, value) {
+  const prettyName = prettyFieldName(name);
+  // 如果是字段名包含 image 或 img -> 图片上传器
+  if (/image|img|banner|photo|logo/i.test(name)) {
+    return `
+      <div class="form-group">
+        <label>${prettyName} (${name})</label>
+        <div class="image-preview" onclick="this.querySelector('input').click()">
+          ${value ? `<img src="${fixImageUrl(value)}" />` : '<div class="placeholder">点击上传图片<br><small>(支持 jpg/png)</small></div>'}
+          <input type="file" accept="image/*" onchange="handleSingleImageUpload(event, '${name}')" />
+        </div>
+        <input type="hidden" id="field-${name}" value="${escapeAttr(value || '')}" />
+      </div>`;
+  }
+  // 如果字段值是数组，且元素包含 image/gallery/src 关键字 -> 图片列表
+  if (Array.isArray(value)) {
+    const first = value[0];
+    if (typeof first === 'object' && first !== null && ('src' in first || 'image' in first)) {
+      // 对象数组（如 gallery）
+      return renderGalleryField(name, value);
+    } else {
+      // 普通数组
+      return `
+        <div class="form-group">
+          <label>${prettyName} (${name}) - 列表</label>
+          <div id="list-${name}" data-field="${name}"></div>
+          <button class="btn btn-secondary" style="margin-top:8px;" onclick="addListItem('${name}')">➕ 添加一项</button>
+          <script>renderListItems('${name}', ${JSON.stringify(value).replace(/<\/script>/g,'<\\/script>')})<\/script>
+        </div>`;
+    }
+  }
+  // 多行文本
+  if (typeof value === 'string' && (value.length > 100 || value.includes('\n'))) {
+    return `
+      <div class="form-group">
+        <label>${prettyName} (${name})</label>
+        <textarea id="field-${name}">${escapeHtml(value || '')}</textarea>
+      </div>`;
+  }
+  // 默认单行文本
+  return `
+    <div class="form-group">
+      <label>${prettyName} (${name})</label>
+      <input type="text" id="field-${name}" value="${escapeAttr(value || '')}" />
+    </div>`;
+}
+function renderGalleryField(name, value) {
+  const items = value || [];
+  const html = items.map((it,i) => {
+    const src = it.src || it.image || '';
+    return `<div class="gallery-item" data-idx="${i}">
+      <img src="${fixImageUrl(src)}" />
+      <button class="remove" title="删除" onclick="removeGalleryItem('${name}',${i})">×</button>
+    </div>`;
+  }).join('');
+  return `
+    <div class="form-group">
+      <label>${prettyFieldName(name)} (${name}) - 图片画廊</label>
+      <div class="gallery-list" id="gallery-${name}">
+        ${html}
+        <div class="gallery-add">
+          +
+          <input type="file" accept="image/*" onchange="handleGalleryImageUpload(event,'${name}')" />
+        </div>
+      </div>
+    </div>`;
+}
+function renderListItems(name, arr) {
+  const list = arr || [];
+  const container = document.getElementById('list-'+name);
+  if (!container) return;
+  container.innerHTML = list.map((item, i) => {
+    if (typeof item === 'object' && item !== null) {
+      // 对象数组：渲染子字段
+      return `<div class="card" style="padding:12px; margin-bottom:8px; border:1px solid #e6e6e6;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <strong style="font-size:13px;">第 ${i+1} 项</strong>
+          <button class="btn btn-danger" onclick="removeListItem('${name}',${i})" style="padding:4px 10px; font-size:12px;">删除</button>
+        </div>
+        ${Object.entries(item).map(([k,v]) => renderField(name+'__'+i+'__'+k, v)).join('')}
+      </div>`;
+    }
+    return `<div style="display:flex; gap:8px; margin-bottom:8px;">
+      <input type="text" id="field-${name}__${i}" value="${escapeAttr(item || '')}" style="flex:1; padding:8px 12px; border:1px solid #ddd; border-radius:6px; font-size:13px;" />
+      <button class="btn btn-danger" onclick="removeListItem('${name}',${i})" style="padding:4px 10px; font-size:12px;">删除</button>
+    </div>`;
+  }).join('');
+}
+function addListItem(name) {
+  const raw = document.getElementById('list-'+name).dataset.raw || '[]';
+  try {
+    const arr = JSON.parse(document.getElementById('list-'+name).dataset.raw || '[]');
+    const fm = collectFormValues();
+    // 从当前表单收集最新
+    const currentArr = collectNestedList(name);
+    currentArr.push(typeof arr[0] === 'object' ? {} : '');
+    document.getElementById('list-'+name).dataset.raw = JSON.stringify(currentArr);
+    renderListItems(name, currentArr);
+  } catch(e) { console.error(e); }
+}
+function removeListItem(name, idx) {
+  const currentArr = collectNestedList(name);
+  currentArr.splice(idx, 1);
+  renderListItems(name, currentArr);
+}
+function removeGalleryItem(name, idx) {
+  const arr = collectGallery(name);
+  arr.splice(idx, 1);
+  document.getElementById('mainContent').innerHTML = document.getElementById('mainContent').innerHTML; // 触发重绘？不，重新渲染
+  // 简单粗暴：重新渲染字段区
+  const fm = collectFormValues();
+  fm[name] = arr;
+  const body = document.getElementById('bodyField')?.value || '';
+  // 重建
+  const fields = [];
+  for (const [k,v] of Object.entries(fm)) {
+    fields.push({name:k, value:v});
+  }
+  document.getElementById('editorFields').innerHTML = fields.map(f => renderField(f.name, f.value)).join('');
+}
+
+// ====== 渲染文件夹列表 ======
+function renderFolderList(key, config, entries) {
+  const cards = entries.map(e => {
+    const img = e.fm.image || (Array.isArray(e.fm.gallery) && e.fm.gallery[0] && (e.fm.gallery[0].src||e.fm.gallery[0].image)) || '';
+    const desc = e.fm.description || e.body?.substring(0,80) || '';
+    const date = e.fm.date || '';
+    return `
+      <div class="file-card" onclick="editFolderItem('${key}','${e._path}')">
+        <img src="${fixImageUrl(img)}" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22140%22><rect fill=%22%23ecf0f1%22 width=%22200%22 height=%22140%22/><text x=%2250%25%22 y=%2250%25%22 fill=%22%2395a5a6%22 font-size=%2214%22 text-anchor=%22middle%22 dy=%22.3em%22>无图片</text></svg>'">
+        <div class="title">${escapeHtml(e.fm.title || '（无标题）')}</div>
+        <div class="desc">${escapeHtml(desc)}</div>
+        <div class="footer">
+          <span class="date">${date || ''}</span>
+          <button class="btn btn-danger" onclick="event.stopPropagation(); deleteFolderItem('${key}','${e._path}')">删除</button>
+        </div>
+      </div>`;
+  }).join('');
+  document.getElementById('mainContent').innerHTML = `
+    <div class="content-header">
+      <h2>${config.label} - 共 ${entries.length} 条</h2>
+      <button class="btn btn-primary" onclick="newFolderItem('${key}')">➕ 新建</button>
+    </div>
+    <div class="file-list">${cards || '<div style="grid-column:1/-1; padding:40px; text-align:center; color:#95a5a6; background:white; border-radius:8px;">暂无内容，点击右上角「新建」按钮创建</div>'}</div>
+  `;
+}
+
+// ====== 编辑/新建文件夹项 ======
+async function editFolderItem(key, path) {
+  showLoading('加载内容...');
+  try {
+    const raw = await ghGetContent(path, true);
+    const parsed = parseFrontmatter(raw);
+    const config = COLLECTION_MAP[key];
+    openEditor({
+      title: `编辑 - ${parsed.fm.title || '新项目'}`,
+      fields: config.fields,
+      fm: parsed.fm,
+      body: parsed.body,
+      saveFn: () => saveFolderItem(key, path, false)
+    });
+  } catch(e) { toast('加载失败: '+e.message,'error'); }
+  hideLoading();
+}
+function newFolderItem(key) {
+  const config = COLLECTION_MAP[key];
+  openEditor({
+    title: `新建 ${config.label}`,
+    fields: config.fields,
+    fm: {},
+    body: '',
+    saveFn: () => saveFolderItem(key, null, true)
+  });
+}
+function openEditor({title, fields, fm, body, saveFn}) {
+  currentEditorSave = saveFn;
+  const html = `
+    <h2>${title}</h2>
+    <div id="editorFields">
+      ${fields.map(f => renderField(f, fm[f])).join('')}
+    </div>
+    ${body !== undefined ? `
+      <div style="margin-top:20px; padding-top:16px; border-top:1px solid #eee;">
+        <h3 style="margin-bottom:10px; color:#2c3e50;">正文内容 (Body)</h3>
+        <textarea id="bodyField" style="width:100%; min-height:160px; padding:12px; border:1px solid #ddd; border-radius:6px; font-family:inherit; font-size:14px;">${escapeHtml(body || '')}</textarea>
+      </div>` : ''}
+    <div class="editor-footer">
+      <button class="btn btn-secondary" onclick="closeEditor()">取消</button>
+      <button class="btn btn-success" onclick="currentEditorSave()">💾 保存到 GitHub</button>
+    </div>
+  `;
+  document.getElementById('editorPanel').innerHTML = html;
+  document.getElementById('editorOverlay').classList.add('active');
+}
+let currentEditorSave = null;
+function closeEditor() {
+  document.getElementById('editorOverlay').classList.remove('active');
+  currentEditorSave = null;
+}
+
+// ====== 收集表单值 ======
+function collectFormValues() {
+  const result = {};
+  const inputs = document.querySelectorAll('input[id^="field-"]:not([type="file"]), textarea[id^="field-"]');
+  inputs.forEach(inp => {
+    const key = inp.id.substring(6); // field-xxx
+    // 跳过嵌套的（用 __ 分隔）
+    if (!key.includes('__')) {
+      result[key] = inp.value;
+    }
+  });
+  // 处理画廊
+  document.querySelectorAll('[id^="gallery-"]').forEach(gal => {
+    const key = gal.id.substring(8);
+    result[key] = collectGallery(key);
+  });
+  // 处理嵌套数组列表
+  document.querySelectorAll('[id^="list-"]').forEach(listEl => {
+    const key = listEl.dataset.field || listEl.id.substring(5);
+    result[key] = collectNestedList(key);
+  });
+  return result;
+}
+function collectGallery(key) {
+  const gal = document.getElementById('gallery-'+key);
+  if (!gal) return [];
+  const arr = [];
+  gal.querySelectorAll('.gallery-item').forEach(it => {
+    const img = it.querySelector('img');
+    if (img && img.src && !img.src.startsWith('data:image/svg+xml')) {
+      const src = img.dataset.rawSrc || decodeURIComponent(img.src);
+      arr.push({ src: extractImagePath(src) });
+    }
+  });
+  return arr;
+}
+function collectNestedList(name) {
+  const listEl = document.getElementById('list-'+name);
+  if (!listEl) return [];
+  // 如果有嵌套的 field-{name}__{idx}__{subkey}
+  const result = [];
+  // 判断是否有嵌套字段
+  const firstInput = document.querySelector(`input[id^="field-${name}__"], textarea[id^="field-${name}__"], .image-preview:has([id^="field-${name}__"])`);
+  if (document.getElementById(`field-${name}__0__`)) {
+    // 对象数组
+    const subkeys = new Set();
+    document.querySelectorAll(`[id^="field-${name}__"]`).forEach(el => {
+      const parts = el.id.substring(6).split('__');
+      const idx = parseInt(parts[1]);
+      if (parts[2]) subkeys.add(idx + ':' + parts[2]);
+    });
+    const byIdx = {};
+    subkeys.forEach(s => {
+      const [idx, sub] = s.split(':');
+      if (!byIdx[idx]) byIdx[idx] = {};
+      const inp = document.getElementById(`field-${name}__${idx}__${sub}`);
+      if (inp) byIdx[idx][sub] = inp.value;
+      else {
+        // 图片类型
+        const parent = document.querySelector(`[id="field-${name}__${idx}__${sub}"]`) 
+          || document.querySelector(`[id="gallery-${name}__${idx}__${sub}"]`);
+      }
+    });
+    return Object.keys(byIdx).sort().map(k => byIdx[k]);
+  } else {
+    // 简单数组
+    let idx = 0;
+    while (true) {
+      const inp = document.getElementById(`field-${name}__${idx}`);
+      if (!inp) break;
+      result.push(inp.value);
+      idx++;
+    }
+    return result;
+  }
+}
+
+// ====== 图片上传 ======
+async function handleSingleImageUpload(event, fieldName) {
+  const file = event.target.files[0];
+  if (!file) return;
+  showLoading('上传图片中...');
+  try {
+    const url = await uploadImageToGithub(file);
+    document.getElementById('field-'+fieldName).value = url;
+    // 更新预览
+    const preview = event.target.closest('.image-preview');
+    preview.innerHTML = `<img src="${fixImageUrl(url)}" /><input type="file" accept="image/*" onchange="handleSingleImageUpload(event,'${fieldName}')" />`;
+    toast('图片上传成功', 'success');
+  } catch(e) { toast('上传失败: '+e.message,'error'); }
+  hideLoading();
+}
+async function handleGalleryImageUpload(event, galleryKey) {
+  const file = event.target.files[0];
+  if (!file) return;
+  showLoading('上传图片中...');
+  try {
+    const url = await uploadImageToGithub(file);
+    const gal = document.getElementById('gallery-'+galleryKey);
+    const addBox = gal.querySelector('.gallery-add');
+    const newItem = document.createElement('div');
+    newItem.className = 'gallery-item';
+    newItem.innerHTML = `<img src="${fixImageUrl(url)}" data-raw-src="${url}" /><button class="remove" title="删除">×</button>`;
+    newItem.querySelector('.remove').onclick = () => {
+      newItem.remove();
+    };
+    gal.insertBefore(newItem, addBox);
+    // 重置 input
+    event.target.value = '';
+    toast('图片上传成功', 'success');
+  } catch(e) { toast('上传失败: '+e.message,'error'); }
+  hideLoading();
+}
+async function uploadImageToGithub(file) {
+  // 生成安全的文件名
+  const timestamp = Date.now();
+  const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+  const safeName = file.name.replace(/\.[^.]+$/, '').replace(/[^a-zA-Z0-9]/g, '-').substring(0, 20);
+  const fileName = `${safeName}-${timestamp}.${ext}`;
+  const path = `static/images/${fileName}`;
+  // 读取文件转 base64
+  const b64 = await fileToBase64(file);
+  // 检查文件是否存在
+  let sha = null;
+  try {
+    const existing = await ghApi(`repos/${GH_REPO}/contents/${path}`);
+    sha = existing.sha;
+  } catch(e) {} // 404 正常
+  // 创建/更新
+  const resp = await ghApi(`repos/${GH_REPO}/contents/${path}`, 'PUT', {
+    message: `upload image: ${fileName}`,
+    content: b64,
+    branch: GH_BRANCH,
+    ...(sha ? { sha } : {})
+  });
+  return `/images/${fileName}`;
+}
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+// ====== 保存单页面 ======
+async function saveSingle(key) {
+  showLoading('提交中...');
+  try {
+    const fm = collectFormValues();
+    const body = document.getElementById('bodyField')?.value || '';
+    const config = COLLECTION_MAP[key];
+    const content = serializeFrontmatter(fm) + (body ? '\n' + body : '');
+    const sha = await ghGetFileSha(config.file);
+    await ghApi(`repos/${GH_REPO}/contents/${config.file}`, 'PUT', {
+      message: `update ${key}: ${config.label}`,
+      content: stringToBase64(content),
+      branch: GH_BRANCH,
+      sha: sha
+    });
+    toast('保存成功！等待 GitHub Pages 构建后前端会显示。', 'success');
+  } catch(e) { toast('保存失败: '+e.message,'error'); }
+  hideLoading();
+}
+
+// ====== 保存文件夹项 ======
+async function saveFolderItem(key, path, isNew) {
+  showLoading('提交中...');
+  try {
+    const fm = collectFormValues();
+    const body = document.getElementById('bodyField')?.value || '';
+    const content = serializeFrontmatter(fm) + (body ? '\n' + body : '');
+    const config = COLLECTION_MAP[key];
+    let targetPath = path;
+    if (isNew) {
+      const titleSlug = (fm.title || 'new-item').toLowerCase().replace(/[^a-z0-9\u4e00-\u9fa5]+/g, '-').replace(/^-+|-+$/g,'');
+      const timestamp = new Date().toISOString().slice(0,10);
+      if (key === 'news') {
+        targetPath = `${config.folder}/${timestamp}-${titleSlug}.md`;
+      } else {
+        targetPath = `${config.folder}/product-${titleSlug || Date.now()}.md`;
+      }
+    }
+    let sha = null;
+    if (!isNew) sha = await ghGetFileSha(targetPath);
+    await ghApi(`repos/${GH_REPO}/contents/${targetPath}`, 'PUT', {
+      message: `${isNew?'create':'update'} ${key}: ${fm.title || targetPath}`,
+      content: stringToBase64(content),
+      branch: GH_BRANCH,
+      ...(sha ? { sha } : {})
+    });
+    toast(`${isNew?'创建':'保存'}成功！`, 'success');
+    closeEditor();
+    openCollection(key); // 刷新
+  } catch(e) { toast('保存失败: '+e.message,'error'); }
+  hideLoading();
+}
+
+// ====== 删除文件夹项 ======
+async function deleteFolderItem(key, path) {
+  if (!confirm('确定要删除这个项目吗？此操作不可恢复。')) return;
+  showLoading('删除中...');
+  try {
+    const sha = await ghGetFileSha(path);
+    await ghApi(`repos/${GH_REPO}/contents/${path}`, 'DELETE', {
+      message: `delete ${key} item`,
+      branch: GH_BRANCH,
+      sha: sha
+    });
+    toast('删除成功', 'success');
+    openCollection(key);
+  } catch(e) { toast('删除失败: '+e.message,'error'); }
+  hideLoading();
+}
+
+// ====== GitHub API 基础 ======
+async function ghApi(endpoint, method='GET', body=null) {
+  const options = {
+    method,
+    headers: {
+      'Authorization': 'token ' + GH_TOKEN,
+      'Accept': 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json'
+    }
+  };
+  if (body) options.body = JSON.stringify(body);
+  const resp = await fetch(`https://api.github.com/${endpoint}`, options);
+  const text = await resp.text();
+  let data;
+  try { data = JSON.parse(text); } catch(e) { data = text; }
+  if (!resp.ok) {
+    const msg = (data && (data.message || data.error)) || `HTTP ${resp.status}`;
+    throw new Error(msg);
+  }
+  return data;
+}
+async function ghGetContent(path, raw=false) {
+  const data = await ghApi(`repos/${GH_REPO}/contents/${path}?ref=${GH_BRANCH}`);
+  if (raw) {
+    if (data.content === undefined || data.encoding !== 'base64') {
+      // 直接获取 raw
+      const resp = await fetch(data.download_url, { cache: 'no-store' });
+      return await resp.text();
+    }
+    const bin = atob(data.content);
+    // 处理 UTF-8
+    const bytes = new Uint8Array(bin.length);
+    for (let i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
+    return new TextDecoder('utf-8').decode(bytes);
+  }
+  return data;
+}
+async function ghGetFileSha(path) {
+  try {
+    const data = await ghApi(`repos/${GH_REPO}/contents/${path}?ref=${GH_BRANCH}`);
+    return data.sha;
+  } catch(e) { return null; }
+}
+async function ghListFolder(folder) {
+  const data = await ghApi(`repos/${GH_REPO}/contents/${folder}?ref=${GH_BRANCH}`);
+  if (Array.isArray(data)) return data;
+  return [];
+}
+
+// ====== Frontmatter 解析/序列化 ======
+function parseFrontmatter(raw) {
+  const match = raw.match(/^---\s*\n([\s\S]*?)\n---\s*\n?([\s\S]*)$/);
+  if (!match) return { fm: {}, body: raw };
+  const fmText = match[1];
+  const body = match[2] || '';
+  const fm = parseYamlSimple(fmText);
+  return { fm, body };
+}
+function parseYamlSimple(text) {
+  const result = {};
+  const lines = text.split('\n');
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i];
+    if (!line.trim() || line.trim().startsWith('#')) { i++; continue; }
+    // 简单键值
+    const simple = line.match(/^([a-zA-Z_][\w\-]*):\s*(.*)$/);
+    if (simple) {
+      const key = simple[1];
+      let val = simple[2].trim();
+      if (val === '') {
+        // 可能是数组（下一行开始）
+        const arr = [];
+        let j = i + 1;
+        // 寻找下一级缩进
+        let indent = null;
+        while (j < lines.length) {
+          const l = lines[j];
+          if (!l.trim()) { j++; continue; }
+          if (indent === null) {
+            if (l.match(/^\s+/)) indent = l.match(/^\s+/)[0];
+            else break;
+          } else {
+            if (!l.startsWith(indent)) break;
+          }
+          const itemMatch = l.match(/^\s*-\s*(.*)$/);
+          if (itemMatch) {
+            const itemVal = itemMatch[1].trim();
+            if (itemVal === '' || itemVal.startsWith('#')) {
+              // 对象数组
+              const obj = {};
+              let k = j + 1;
+              while (k < lines.length) {
+                const ol = lines[k];
+                if (!ol.trim()) { k++; continue; }
+                if (!ol.startsWith(indent + '  ') && !ol.startsWith(indent + '\t')) break;
+                const okv = ol.match(/^\s+([a-zA-Z_][\w\-]*):\s*(.*)$/);
+                if (okv) {
+                  obj[okv[1]] = parseYamlValue(okv[2]);
+                  k++;
+                } else break;
+              }
+              arr.push(obj);
+              j = k - 1;
+            } else {
+              arr.push(parseYamlValue(itemVal));
+            }
+            j++;
+          } else if (l.match(/^\s*$/)) { j++; }
+          else break;
+        }
+        if (arr.length > 0) {
+          result[key] = arr;
+          i = j;
+          continue;
+        }
+      } else {
+        result[key] = parseYamlValue(val);
+      }
+      i++;
+      continue;
+    }
+    i++;
+  }
+  return result;
+}
+function parseYamlValue(v) {
+  const s = v.trim();
+  if ((s.startsWith('"') && s.endsWith('"')) || (s.startsWith("'") && s.endsWith("'"))) {
+    return s.substring(1, s.length - 1);
+  }
+  if (s.toLowerCase() === 'true') return true;
+  if (s.toLowerCase() === 'false') return false;
+  if (!isNaN(Number(s)) && s !== '' && /^-?\d+(\.\d+)?$/.test(s)) return Number(s);
+  return s;
+}
+function serializeFrontmatter(fm) {
+  let out = '---\n';
+  for (const [k, v] of Object.entries(fm)) {
+    out += serializeYamlKeyValue(k, v, 0);
+  }
+  out += '---\n';
+  return out;
+}
+function serializeYamlKeyValue(key, value, indent) {
+  const sp = '  '.repeat(indent);
+  const keyLine = `${sp}${key}:`;
+  if (value === null || value === undefined || value === '') return `${keyLine}\n`;
+  if (Array.isArray(value)) {
+    if (value.length === 0) return `${keyLine} []\n`;
+    let out = `${keyLine}\n`;
+    for (const item of value) {
+      if (typeof item === 'object' && item !== null) {
+        out += `${sp}- `;
+        const entries = Object.entries(item);
+        if (entries.length === 0) { out += '\n'; continue; }
+        entries.forEach(([ek, ev], idx) => {
+          if (idx === 0) {
+            out += serializeYamlKeyValue(ek, ev, 0).replace(/^/, '').replace(/\n$/, '\n');
+          } else {
+            out += serializeYamlKeyValue(ek, ev, indent + 1).replace(/^  /, sp + '  ');
+          }
+        });
+      } else {
+        out += `${sp}- ${yamlEscape(item)}\n`;
+      }
+    }
+    return out;
+  }
+  if (typeof value === 'object' && value !== null) {
+    let out = `${keyLine}\n`;
+    for (const [ek, ev] of Object.entries(value)) {
+      out += serializeYamlKeyValue(ek, ev, indent + 1);
+    }
+    return out;
+  }
+  return `${keyLine} ${yamlEscape(value)}\n`;
+}
+function yamlEscape(v) {
+  if (typeof v === 'boolean') return v ? 'true' : 'false';
+  if (typeof v === 'number') return String(v);
+  const s = String(v);
+  if (s === '') return '""';
+  if (/[:#\[\]{}!&*?'",>|\n]/.test(s) || s.trim() !== s) {
+    return '"' + s.replace(/\\/g, '\\\\').replace(/"/g, '\\"') + '"';
+  }
+  return s;
+}
+
+// ====== 辅助工具 ======
+function stringToBase64(str) {
+  const bytes = new TextEncoder().encode(str);
+  let bin = '';
+  for (let i=0;i<bytes.length;i++) bin += String.fromCharCode(bytes[i]);
+  return btoa(bin);
+}
+function escapeHtml(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function escapeAttr(s) {
+  return escapeHtml(s);
+}
+function prettyFieldName(name) {
+  const map = {
+    title:'标题',banner_title:'主标题',banner_subtitle:'副标题',description:'描述',
+    image:'主图',gallery:'图片画廊',body:'正文',date:'日期',
+    phone:'电话',email:'邮箱',address:'地址',website:'网址',
+    copyright:'版权声明',about_text:'关于文字',categories:'分类',
+    name:'名称',url:'链接',src:'图片',caption:'说明',
+    tab1_title:'标签1标题',tab1_content:'标签1内容',tab2_title:'标签2标题',
+    tab2_content:'标签2内容',tab3_title:'标签3标题',tab3_images:'标签3图片'
+  };
+  return map[name] || name;
+}
+function fixImageUrl(src) {
+  if (!src) return '';
+  if (src.startsWith('http')) return src;
+  if (src.startsWith('/')) return 'https://raw.githubusercontent.com/' + GH_REPO + '/' + GH_BRANCH + '/static' + src;
+  // 相对路径 images/xxx -> static/images/xxx
+  if (src.startsWith('images/')) return 'https://raw.githubusercontent.com/' + GH_REPO + '/' + GH_BRANCH + '/static/' + src;
+  return 'https://raw.githubusercontent.com/' + GH_REPO + '/' + GH_BRANCH + '/' + src;
+}
+function extractImagePath(url) {
+  if (!url) return '';
+  if (url.startsWith('/images/')) return url;
+  if (url.includes('raw.githubusercontent.com')) {
+    const m = url.match(/\/static(\/images\/.+)$/);
+    if (m) return m[1];
+  }
+  return url;
+}
+function toast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = (type==='success'?'✅ ':'❌ ') + msg;
+  t.className = 'toast ' + type + ' active';
+  setTimeout(() => t.classList.remove('active'), 4000);
+}
+function showLoading(text='加载中...') {
+  document.getElementById('loadingText').textContent = text;
+  document.getElementById('loadingMask').classList.add('active');
+}
+function hideLoading() {
+  document.getElementById('loadingMask').classList.remove('active');
+}
+function doLogout() {
+  if (confirm('确定退出登录？')) {
+    localStorage.removeItem('gh_token');
+    localStorage.removeItem('gh_username');
+    const basePath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/')+1);
+    window.location.href = basePath;
+  }
+}
+</script>
+</body>
+</html>

@@ -240,7 +240,7 @@ async function openCollection(key) {
   showLoading('加载中...');
   try {
     if (c.type === 'single') {
-      const data = await ghGetContent(c.file);
+      const data = await ghGetContent(c.file, true);  // 修复: 加 true 返回字符串
       renderSingleEditor(key, c, data);
     } else {
       const items = await ghListFolder(c.folder);
@@ -726,17 +726,26 @@ async function ghApi(endpoint, method='GET', body=null) {
 }
 async function ghGetContent(path, raw=false) {
   const data = await ghApi(`repos/${GH_REPO}/contents/${path}?ref=${GH_BRANCH}`);
+  // 如果返回的是数组（目录），抛出错误
+  if (Array.isArray(data)) {
+    throw new Error('路径是目录不是文件: ' + path);
+  }
   if (raw) {
     if (data.content === undefined || data.encoding !== 'base64') {
       // 直接获取 raw
       const resp = await fetch(data.download_url, { cache: 'no-store' });
       return await resp.text();
     }
-    const bin = atob(data.content);
-    // 处理 UTF-8
-    const bytes = new Uint8Array(bin.length);
-    for (let i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
-    return new TextDecoder('utf-8').decode(bytes);
+    try {
+      const bin = atob(data.content);
+      const bytes = new Uint8Array(bin.length);
+      for (let i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
+      return new TextDecoder('utf-8').decode(bytes);
+    } catch(e) {
+      // base64 解码失败，尝试直接用 download_url
+      const resp = await fetch(data.download_url, { cache: 'no-store' });
+      return await resp.text();
+    }
   }
   return data;
 }

@@ -42,7 +42,7 @@
     </div>
     {{ end }}
 
-    {{ if $gallery }}
+    {{ if and $gallery (gt (len $gallery) 0) }}
     <div class="product-gallery">
       <h2 class="section-title">Product Gallery</h2>
       <div class="gallery-grid">

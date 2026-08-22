@@ -11,8 +11,11 @@
     <div class="product-grid">
       {{ range .Pages }}
       {{ $img := .Params.image }}
-      {{ if and (not $img) .Params.gallery }}
-        {{ range first 1 .Params.gallery }}
+      {{ $gallery := .Params.gallery }}
+      {{ $galleryLen := 0 }}
+      {{ if $gallery }}{{ $galleryLen = len $gallery }}{{ end }}
+      {{ if and (not $img) (gt $galleryLen 0) }}
+        {{ range first 1 $gallery }}
           {{ if .src }}{{ $img = .src }}{{ end }}
         {{ end }}
       {{ end }}

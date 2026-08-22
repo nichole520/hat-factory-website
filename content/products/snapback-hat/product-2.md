@@ -1,7 +1,6 @@
 ---
 title: "High Crown Snapback Cap"
 image: "/images/1-6-.jpg"
-gallery:
   - src: "/images/1-6-.jpg"
   - src: "/images/1-7-.jpg"
   - src: "/images/1-8-.jpg"

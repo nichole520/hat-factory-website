@@ -1,7 +1,6 @@
 ---
 title: Classic Cotton Baseball Cap
 image: /images/1-1-.jpg
-gallery:
   - src: /images/1-1-.jpg
   - src: /images/1-3-.jpg
   - src: /images/1-3-.jpg

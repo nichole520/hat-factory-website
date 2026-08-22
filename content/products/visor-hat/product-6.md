@@ -1,6 +1,7 @@
 ---
 title: "Embroidered Logo Visor"
 image: "/images/1-2-.jpg"
+gallery:
   - src: "/images/1-2-.jpg"
   - src: "/images/1-3-.jpg"
   - src: "/images/1-4-.jpg"

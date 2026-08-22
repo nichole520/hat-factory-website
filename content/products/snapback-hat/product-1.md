@@ -1,6 +1,7 @@
 ---
 title: "Classic Flat Brim Snapback"
 image: "/images/1-5-.jpg"
+gallery:
   - src: "/images/1-5-.jpg"
   - src: "/images/1-6-.jpg"
   - src: "/images/1-7-.jpg"

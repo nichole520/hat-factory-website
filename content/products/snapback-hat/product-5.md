@@ -1,6 +1,7 @@
 ---
 title: "Mesh Snapback Hat"
 image: "/images/1-9-.jpg"
+gallery:
   - src: "/images/1-9-.jpg"
   - src: "/images/1-1-.jpg"
   - src: "/images/1-2-.jpg"

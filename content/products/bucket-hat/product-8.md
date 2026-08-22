@@ -1,6 +1,7 @@
 ---
 title: "Kids Animal Bucket Hat"
 image: "/images/1-7-.jpg"
+gallery:
   - src: "/images/1-7-.jpg"
   - src: "/images/1-8-.jpg"
   - src: "/images/1-9-.jpg"

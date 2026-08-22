@@ -1,6 +1,7 @@
 ---
 title: "Vintage Wash Dad Cap"
 image: "/images/1-8-.jpg"
+gallery:
   - src: "/images/1-8-.jpg"
   - src: "/images/1-9-.jpg"
   - src: "/images/1-1-.jpg"

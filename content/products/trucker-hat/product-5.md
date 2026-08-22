@@ -1,6 +1,7 @@
 ---
 title: "Vintage Patch Trucker"
 image: "/images/1-3-.jpg"
+gallery:
   - src: "/images/1-3-.jpg"
   - src: "/images/1-4-.jpg"
   - src: "/images/1-5-.jpg"

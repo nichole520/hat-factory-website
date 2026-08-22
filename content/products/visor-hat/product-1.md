@@ -1,7 +1,6 @@
 ---
 title: " Visor 1"
 image: /images/9--8--1787407723823.jpg
-gallery: "[]"
 description: "High quality visor hat - Model VS-01. OEM and ODM welcome, custom logo available, competitive factory price, fast sample and bulk delivery."
 body:
 ---

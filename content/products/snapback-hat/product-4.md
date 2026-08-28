@@ -1,16 +1,6 @@
 ---
-title: "Two Tone Snapback"
-image: "/images/1-8-.jpg"
-gallery:
-  - src: "/images/1-8-.jpg"
-  - src: "/images/1-9-.jpg"
-  - src: "/images/1-1-.jpg"
-  - src: "/images/1-2-.jpg"
-  - src: "/images/1-3-.jpg"
-  - src: "/images/1-4-.jpg"
-  - src: "/images/1-5-.jpg"
-  - src: "/images/1-6-.jpg"
-
+title: B-S004
+image: /images/s--4--1787932691583.jpg
 description: "High quality snapback hat - Model SB-04. OEM and ODM welcome, custom logo available, competitive factory price, fast sample and bulk delivery."
 ---
 

@@ -1,16 +1,6 @@
 ---
-title: "Embroidered Logo Visor"
-image: "/images/1-2-.jpg"
-gallery:
-  - src: "/images/1-2-.jpg"
-  - src: "/images/1-3-.jpg"
-  - src: "/images/1-4-.jpg"
-  - src: "/images/1-5-.jpg"
-  - src: "/images/1-6-.jpg"
-  - src: "/images/1-7-.jpg"
-  - src: "/images/1-8-.jpg"
-  - src: "/images/1-9-.jpg"
-
+title: Embroidered Logo Visor
+image: /images/9--6--1787931907964.jpg
 description: "High quality visor hat - Model VS-06. OEM and ODM welcome, custom logo available, competitive factory price, fast sample and bulk delivery."
 ---
 

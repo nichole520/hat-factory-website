@@ -1,16 +1,6 @@
 ---
-title: "Golf Performance Visor"
-image: "/images/1-1-.jpg"
-gallery:
-  - src: "/images/1-1-.jpg"
-  - src: "/images/1-2-.jpg"
-  - src: "/images/1-3-.jpg"
-  - src: "/images/1-4-.jpg"
-  - src: "/images/1-5-.jpg"
-  - src: "/images/1-6-.jpg"
-  - src: "/images/1-7-.jpg"
-  - src: "/images/1-8-.jpg"
-
+title: Golf Performance Visor
+image: /images/9--5--1787931886442.jpg
 description: "High quality visor hat - Model VS-05. OEM and ODM welcome, custom logo available, competitive factory price, fast sample and bulk delivery."
 ---
 

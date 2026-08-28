@@ -1,16 +1,6 @@
 ---
-title: "Suede Snapback Cap"
-image: "/images/1-1-.jpg"
-gallery:
-  - src: "/images/1-1-.jpg"
-  - src: "/images/1-2-.jpg"
-  - src: "/images/1-3-.jpg"
-  - src: "/images/1-4-.jpg"
-  - src: "/images/1-5-.jpg"
-  - src: "/images/1-6-.jpg"
-  - src: "/images/1-7-.jpg"
-  - src: "/images/1-8-.jpg"
-
+title: B-S006
+image: /images/s--6--1787932746520.jpg
 description: "High quality snapback hat - Model SB-06. OEM and ODM welcome, custom logo available, competitive factory price, fast sample and bulk delivery."
 ---
 

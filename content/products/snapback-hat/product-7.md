@@ -1,16 +1,6 @@
 ---
-title: "Vintage Snapback"
-image: "/images/1-2-.jpg"
-gallery:
-  - src: "/images/1-2-.jpg"
-  - src: "/images/1-3-.jpg"
-  - src: "/images/1-4-.jpg"
-  - src: "/images/1-5-.jpg"
-  - src: "/images/1-6-.jpg"
-  - src: "/images/1-7-.jpg"
-  - src: "/images/1-8-.jpg"
-  - src: "/images/1-9-.jpg"
-
+title: B-S007
+image: /images/s--7--1787932776752.jpg
 description: "High quality snapback hat - Model SB-07. OEM and ODM welcome, custom logo available, competitive factory price, fast sample and bulk delivery."
 ---
 

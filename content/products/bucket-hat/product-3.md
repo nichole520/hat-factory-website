@@ -1,16 +1,6 @@
 ---
-title: "Fishing Bucket Hat"
-image: "/images/1-2-.jpg"
-gallery:
-  - src: "/images/1-2-.jpg"
-  - src: "/images/1-3-.jpg"
-  - src: "/images/1-4-.jpg"
-  - src: "/images/1-5-.jpg"
-  - src: "/images/1-6-.jpg"
-  - src: "/images/1-7-.jpg"
-  - src: "/images/1-8-.jpg"
-  - src: "/images/1-9-.jpg"
-
+title: B-A003
+image: /images/b--3--1788108953508.jpg
 description: "High quality bucket hat - Model BK-03. OEM and ODM welcome, custom logo available, competitive factory price, fast sample and bulk delivery."
 ---
 

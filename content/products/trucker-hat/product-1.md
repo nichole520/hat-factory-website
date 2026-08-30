@@ -1,16 +1,6 @@
 ---
-title: "Classic Mesh Trucker Cap"
-image: "/images/1-8-.jpg"
-gallery:
-  - src: "/images/1-8-.jpg"
-  - src: "/images/1-9-.jpg"
-  - src: "/images/1-1-.jpg"
-  - src: "/images/1-2-.jpg"
-  - src: "/images/1-3-.jpg"
-  - src: "/images/1-4-.jpg"
-  - src: "/images/1-5-.jpg"
-  - src: "/images/1-6-.jpg"
-
+title: B-T001
+image: /images/T--1--1788111245448.jpg
 description: "High quality trucker hat - Model TK-01. OEM and ODM welcome, custom logo available, competitive factory price, fast sample and bulk delivery."
 ---
 

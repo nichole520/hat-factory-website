@@ -1,16 +1,6 @@
 ---
-title: "Premium Structured Baseball Hat"
-image: "/images/1-2-.jpg"
-gallery:
-  - src: "/images/1-2-.jpg"
-  - src: "/images/1-3-.jpg"
-  - src: "/images/1-4-.jpg"
-  - src: "/images/1-5-.jpg"
-  - src: "/images/1-6-.jpg"
-  - src: "/images/1-7-.jpg"
-  - src: "/images/1-8-.jpg"
-  - src: "/images/1-9-.jpg"
-
+title: B-H002
+image: /images/H--2--1788110579689.jpg
 description: "High quality baseball hat - Model BH-02. OEM and ODM welcome, custom logo available, competitive factory price, fast sample and bulk delivery."
 ---
 

@@ -1,16 +1,6 @@
 ---
-title: "Canvas Dad Hat"
-image: "/images/1-4-.jpg"
-gallery:
-  - src: "/images/1-4-.jpg"
-  - src: "/images/1-5-.jpg"
-  - src: "/images/1-6-.jpg"
-  - src: "/images/1-7-.jpg"
-  - src: "/images/1-8-.jpg"
-  - src: "/images/1-9-.jpg"
-  - src: "/images/1-1-.jpg"
-  - src: "/images/1-2-.jpg"
-
+title: B-D007
+image: /images/D--7--1788110677779.jpg
 description: "High quality dad hat - Model DH-07. OEM and ODM welcome, custom logo available, competitive factory price, fast sample and bulk delivery."
 ---
 

@@ -1,16 +1,6 @@
 ---
-title: "Washed Denim Bucket Hat"
-image: "/images/1-5-.jpg"
-gallery:
-  - src: "/images/1-5-.jpg"
-  - src: "/images/1-6-.jpg"
-  - src: "/images/1-7-.jpg"
-  - src: "/images/1-8-.jpg"
-  - src: "/images/1-9-.jpg"
-  - src: "/images/1-1-.jpg"
-  - src: "/images/1-2-.jpg"
-  - src: "/images/1-3-.jpg"
-
+title: B-A006
+image: /images/b--6--1788109052860.jpg
 description: "High quality bucket hat - Model BK-06. OEM and ODM welcome, custom logo available, competitive factory price, fast sample and bulk delivery."
 ---
 

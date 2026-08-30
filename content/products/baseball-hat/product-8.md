@@ -1,16 +1,6 @@
 ---
-title: "Kids Adjustable Baseball Hat"
-image: "/images/1-8-.jpg"
-gallery:
-  - src: "/images/1-8-.jpg"
-  - src: "/images/1-9-.jpg"
-  - src: "/images/1-1-.jpg"
-  - src: "/images/1-2-.jpg"
-  - src: "/images/1-3-.jpg"
-  - src: "/images/1-4-.jpg"
-  - src: "/images/1-5-.jpg"
-  - src: "/images/1-6-.jpg"
-
+title: B-H008
+image: /images/H--8--1788110912806.jpg
 description: "High quality baseball hat - Model BH-08. OEM and ODM welcome, custom logo available, competitive factory price, fast sample and bulk delivery."
 ---
 

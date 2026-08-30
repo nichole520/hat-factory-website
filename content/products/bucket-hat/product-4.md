@@ -1,16 +1,6 @@
 ---
-title: "Printed Pattern Bucket Hat"
-image: "/images/1-3-.jpg"
-gallery:
-  - src: "/images/1-3-.jpg"
-  - src: "/images/1-4-.jpg"
-  - src: "/images/1-5-.jpg"
-  - src: "/images/1-6-.jpg"
-  - src: "/images/1-7-.jpg"
-  - src: "/images/1-8-.jpg"
-  - src: "/images/1-9-.jpg"
-  - src: "/images/1-1-.jpg"
-
+title: B-A004
+image: /images/b--4--1788108986197.jpg
 description: "High quality bucket hat - Model BK-04. OEM and ODM welcome, custom logo available, competitive factory price, fast sample and bulk delivery."
 ---
 

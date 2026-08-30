@@ -1,16 +1,6 @@
 ---
-title: "Cotton Twill Bucket Hat"
-image: "/images/1-1-.jpg"
-gallery:
-  - src: "/images/1-1-.jpg"
-  - src: "/images/1-2-.jpg"
-  - src: "/images/1-3-.jpg"
-  - src: "/images/1-4-.jpg"
-  - src: "/images/1-5-.jpg"
-  - src: "/images/1-6-.jpg"
-  - src: "/images/1-7-.jpg"
-  - src: "/images/1-8-.jpg"
-
+title: B-A002
+image: /images/b--2--1788108862812.jpg
 description: "High quality bucket hat - Model BK-02. OEM and ODM welcome, custom logo available, competitive factory price, fast sample and bulk delivery."
 ---
 

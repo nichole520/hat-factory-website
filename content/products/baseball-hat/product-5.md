@@ -1,6 +1,6 @@
 ---
-title: B-H005
-image: /images/H--5--1788110846043.jpg
+title: B-H007
+image: /images/H--6--1788110877966.jpg
 description: "High quality baseball hat - Model BH-05. OEM and ODM welcome, custom logo available, competitive factory price, fast sample and bulk delivery."
 ---
 

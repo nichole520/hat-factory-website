@@ -1,16 +1,6 @@
 ---
-title: "Camouflage Baseball Cap"
-image: "/images/1-5-.jpg"
-gallery:
-  - src: "/images/1-5-.jpg"
-  - src: "/images/1-6-.jpg"
-  - src: "/images/1-7-.jpg"
-  - src: "/images/1-8-.jpg"
-  - src: "/images/1-9-.jpg"
-  - src: "/images/1-1-.jpg"
-  - src: "/images/1-2-.jpg"
-  - src: "/images/1-3-.jpg"
-
+title: B-H005
+image: /images/H--5--1788110846043.jpg
 description: "High quality baseball hat - Model BH-05. OEM and ODM welcome, custom logo available, competitive factory price, fast sample and bulk delivery."
 ---
 

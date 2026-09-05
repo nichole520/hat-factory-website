@@ -1,4 +1,4 @@
 ---
 title: B-H006
-image: /images/1-6-.jpg
+image: /images/H--6--1788626777496.jpg
 ---

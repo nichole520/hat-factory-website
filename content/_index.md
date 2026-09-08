@@ -1,7 +1,9 @@
 ---
 title: Home
+logo_text: HAT FACTORY
 banner_title: Hat Factory, Quality First!
 banner_subtitle: Headwear
+banner_image: ""
 categories:
   - name: Baseball Hat
     url: /products/baseball-hat/

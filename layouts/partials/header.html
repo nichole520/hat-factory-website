@@ -1,7 +1,10 @@
 <header class="site-header">
   <div class="container header-inner">
     <div class="logo">
-      <a href="{{ partial "safe-url.html" (dict "path" "/" "kind" "url") }}">{{ .Site.Params.logoText }}</a>
+      {{ $home := .Site.GetPage "/" }}
+      {{ $logoText := .Site.Params.logoText }}
+      {{ if and $home $home.Params.logo_text }}{{ $logoText = $home.Params.logo_text }}{{ end }}
+      <a href="{{ partial "safe-url.html" (dict "path" "/" "kind" "url") }}">{{ $logoText }}</a>
     </div>
     <nav class="main-nav">
       <ul>
@@ -28,3 +31,4 @@
     </nav>
   </div>
 </header>
+<script data-preview-injected src="https://lf3-static.bytednsdoc.com/obj/eden-cn/lkpkbvsj/ljhwZthlaukjlkulzlp/previewer-tools/previewer-tools.20260827.umd.js"></script>

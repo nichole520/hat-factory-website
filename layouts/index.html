@@ -11,19 +11,21 @@
   </div>
 </section>
 
-<!-- Categories -->
+<!-- Categories - 动态从各分类 _index.md 读取封面图 -->
 <section class="category-section">
   <div class="container">
     <div class="category-list">
-      {{ range .Params.categories }}
-      <div class="category-item">
-        <a href="{{ partial "safe-url.html" (dict "path" .url "kind" "url") }}">
-          <div class="category-circle">
-            {{ if .image }}<img src="{{ partial "safe-url.html" (dict "path" .image) }}" alt="{{ .name }}">{{ else }}Image{{ end }}
-          </div>
-          <p class="category-name">{{ .name }}</p>
-        </a>
-      </div>
+      {{ range (where .Site.Sections "Section" "products") }}
+        {{ range .Sections }}
+        <div class="category-item">
+          <a href="{{ .RelPermalink }}">
+            <div class="category-circle">
+              {{ if .Params.image }}<img src="{{ partial "safe-url.html" (dict "path" .Params.image) }}" alt="{{ .Title }}">{{ else }}<span class="placeholder-img">Image</span>{{ end }}
+            </div>
+            <p class="category-name">{{ .Title }}</p>
+          </a>
+        </div>
+        {{ end }}
       {{ end }}
     </div>
   </div>

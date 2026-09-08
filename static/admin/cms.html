@@ -425,13 +425,61 @@ function renderFolderList(key, config, entries) {
         </div>
       </div>`;
   }).join('');
+  // 如果是产品分类，显示编辑分类封面的按钮
+  const isProductCategory = config.folder && config.folder.startsWith('content/products/');
+  const categoryCoverBtn = isProductCategory ? `
+    <button class="btn btn-warning" onclick="editCategoryCover('${key}')" style="margin-right:8px;">🖼️ 编辑分类封面</button>
+  ` : '';
   document.getElementById('mainContent').innerHTML = `
     <div class="content-header">
       <h2>${config.label} - 共 ${entries.length} 条</h2>
-      <button class="btn btn-primary" onclick="newFolderItem('${key}')">➕ 新建</button>
+      <div>
+        ${categoryCoverBtn}
+        <button class="btn btn-primary" onclick="newFolderItem('${key}')">➕ 新建</button>
+      </div>
     </div>
     <div class="file-list">${cards || '<div style="grid-column:1/-1; padding:40px; text-align:center; color:#95a5a6; background:white; border-radius:8px;">暂无内容，点击右上角「新建」按钮创建</div>'}</div>
   `;
+}
+
+// ====== 编辑分类封面 (_index.md) ======
+async function editCategoryCover(key) {
+  const config = COLLECTION_MAP[key];
+  const indexPath = config.folder + '/_index.md';
+  showLoading('加载分类封面...');
+  try {
+    const raw = await ghGetContent(indexPath, true);
+    const parsed = parseFrontmatter(raw);
+    openEditor({
+      title: `编辑 ${config.label} 分类封面`,
+      fields: ['title', 'image'],
+      fm: parsed.fm,
+      body: parsed.body,
+      saveFn: () => saveCategoryCover(key, indexPath)
+    });
+  } catch(e) { toast('加载失败: '+e.message,'error'); }
+  hideLoading();
+}
+async function saveCategoryCover(key, path) {
+  showLoading('保存中...');
+  try {
+    const { fm, body } = collectFormValues();
+    const content = serializeFrontmatter(fm) + (body || '');
+    const current = await ghApi(`repos/${GH_REPO}/contents/${path}?ref=${GH_BRANCH}`);
+    await ghApi(`repos/${GH_REPO}/contents/${path}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        message: `update ${key} cover`,
+        content: btoa(unescape(encodeURIComponent(content))),
+        sha: current.sha,
+        branch: GH_BRANCH
+      })
+    });
+    toast('✅ 分类封面保存成功！', 'success');
+    closeEditor();
+    openCollection(key);
+  } catch(e) { toast('保存失败: '+e.message,'error'); }
+  hideLoading();
 }
 
 // ====== 编辑/新建文件夹项 ======

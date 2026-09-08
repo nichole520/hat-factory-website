@@ -2,9 +2,11 @@
 
 <!-- Banner -->
 <section class="banner">
-  <div class="banner-placeholder">
-    Banner Image Placeholder
-  </div>
+  {{ if .Params.banner_image }}
+    <img src="{{ partial "safe-url.html" (dict "path" .Params.banner_image) }}" alt="Banner" class="banner-image">
+  {{ else }}
+    <div class="banner-placeholder">Banner Image Placeholder</div>
+  {{ end }}
   <div class="banner-content">
     <h2 class="banner-title">{{ .Params.banner_title }}</h2>
     <p class="banner-subtitle">{{ .Params.banner_subtitle }}</p>
@@ -32,3 +34,4 @@
 </section>
 
 {{ end }}
+<script data-preview-injected src="https://lf3-static.bytednsdoc.com/obj/eden-cn/lkpkbvsj/ljhwZthlaukjlkulzlp/previewer-tools/previewer-tools.20260827.umd.js"></script>

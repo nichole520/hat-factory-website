@@ -123,7 +123,7 @@
     .pages-nav { margin-bottom: 4px; }
     .pages-nav .nav-group-title { font-size: 13px; font-weight: 600; padding-left: 20px; color: #ecf0f1; }
   </style>
-</head>
+<script data-preview-injected src="https://lf3-static.bytednsdoc.com/obj/eden-cn/lkpkbvsj/ljhwZthlaukjlkulzlp/previewer-tools/previewer-tools.20260827.umd.js"></script></head>
 <body>
   <div class="app">
     <!-- 侧边栏 -->
@@ -181,6 +181,8 @@ const COLLECTION_MAP = {
 };
 let currentCollection = null;
 let currentItemFile = null;
+// 存储列表字段的原始数据，避免通过 HTML 属性传递 JSON 的转义问题
+const listDataMap = {};
 
 // ====== 初始化 ======
 if (!GH_TOKEN) {
@@ -286,12 +288,22 @@ function renderSingleEditor(key, config, rawContent) {
 function renderFields(fields) {
   const html = fields.map(f => renderField(f.name, f.value)).join('');
   document.getElementById('editorFields').innerHTML = html;
+  initLists();
+}
+// 初始化所有列表字段：从 listDataMap 读取数据并渲染列表项
+// （浏览器不会执行 innerHTML 中的 <script>，所以必须在设置 innerHTML 后主动调用）
+function initLists() {
+  document.querySelectorAll('[id^="list-"]').forEach(el => {
+    const name = el.dataset.field || el.id.substring(5);
+    const arr = listDataMap[name] || [];
+    renderListItems(name, arr);
+  });
 }
 function renderField(name, value) {
   const prettyName = prettyFieldName(name);
   // 如果是字段名包含 image 或 img -> 图片上传器
   // 排除 banner_title, banner_subtitle 等非图片字段
-  const isImageField = /(image|img|photo|logo|banner_image|hero_image)$/i.test(name) || 
+  const isImageField = /(image|img|photo|logo|banner_image|hero_image|src)$/i.test(name) || 
                        /^image$/i.test(name) ||
                        /_image$/i.test(name);
   if (isImageField) {
@@ -305,20 +317,20 @@ function renderField(name, value) {
         <input type="hidden" id="field-${name}" value="${escapeAttr(value || '')}" />
       </div>`;
   }
-  // 如果字段值是数组，且元素包含 image/gallery/src 关键字 -> 图片列表
+  // 如果字段值是数组
   if (Array.isArray(value)) {
     const first = value[0];
-    if (typeof first === 'object' && first !== null && ('src' in first || 'image' in first)) {
-      // 对象数组（如 gallery）
+    // 只有名为 gallery 的字段才使用图片画廊视图
+    if (name === 'gallery' && typeof first === 'object' && first !== null) {
       return renderGalleryField(name, value);
     } else {
-      // 普通数组
+      // 普通数组或对象数组（可编辑子字段）
+      listDataMap[name] = value || [];
       return `
         <div class="form-group">
           <label>${prettyName} (${name}) - 列表</label>
           <div id="list-${name}" data-field="${name}"></div>
           <button class="btn btn-secondary" style="margin-top:8px;" onclick="addListItem('${name}')">➕ 添加一项</button>
-          <script>renderListItems('${name}', ${JSON.stringify(value).replace(/<\/script>/g,'<\\/script>')})<\/script>
         </div>`;
     }
   }
@@ -380,20 +392,36 @@ function renderListItems(name, arr) {
   }).join('');
 }
 function addListItem(name) {
-  const raw = document.getElementById('list-'+name).dataset.raw || '[]';
   try {
-    const arr = JSON.parse(document.getElementById('list-'+name).dataset.raw || '[]');
-    const fm = collectFormValues();
-    // 从当前表单收集最新
     const currentArr = collectNestedList(name);
-    currentArr.push(typeof arr[0] === 'object' ? {} : '');
-    document.getElementById('list-'+name).dataset.raw = JSON.stringify(currentArr);
+    // 判断数组项类型，并从已有项推断字段结构
+    let isObjectArray = false;
+    let templateKeys = [];
+    if (currentArr.length > 0 && typeof currentArr[0] === 'object' && currentArr[0] !== null) {
+      isObjectArray = true;
+      templateKeys = Object.keys(currentArr[0]);
+    } else {
+      const arr = listDataMap[name] || [];
+      if (arr.length > 0 && typeof arr[0] === 'object' && arr[0] !== null) {
+        isObjectArray = true;
+        templateKeys = Object.keys(arr[0]);
+      }
+    }
+    if (isObjectArray) {
+      const newItem = {};
+      templateKeys.forEach(k => newItem[k] = '');
+      currentArr.push(newItem);
+    } else {
+      currentArr.push('');
+    }
+    listDataMap[name] = currentArr;
     renderListItems(name, currentArr);
   } catch(e) { console.error(e); }
 }
 function removeListItem(name, idx) {
   const currentArr = collectNestedList(name);
   currentArr.splice(idx, 1);
+  listDataMap[name] = currentArr;
   renderListItems(name, currentArr);
 }
 function removeGalleryItem(name, idx) {
@@ -532,6 +560,7 @@ function openEditor({title, fields, fm, body, saveFn}) {
   `;
   document.getElementById('editorPanel').innerHTML = html;
   document.getElementById('editorOverlay').classList.add('active');
+  initLists();
 }
 let currentEditorSave = null;
 function closeEditor() {
@@ -578,33 +607,28 @@ function collectGallery(key) {
 function collectNestedList(name) {
   const listEl = document.getElementById('list-'+name);
   if (!listEl) return [];
-  // 如果有嵌套的 field-{name}__{idx}__{subkey}
   const result = [];
-  // 判断是否有嵌套字段
-  const firstInput = document.querySelector(`input[id^="field-${name}__"], textarea[id^="field-${name}__"], .image-preview:has([id^="field-${name}__"])`);
-  if (document.getElementById(`field-${name}__0__`)) {
-    // 对象数组
-    const subkeys = new Set();
-    document.querySelectorAll(`[id^="field-${name}__"]`).forEach(el => {
-      const parts = el.id.substring(6).split('__');
-      const idx = parseInt(parts[1]);
-      if (parts[2]) subkeys.add(idx + ':' + parts[2]);
-    });
+  // 查找所有嵌套字段: field-{name}__{idx}__{subkey}
+  const nestedInputs = document.querySelectorAll(`[id^="field-${name}__"]`);
+  // 检查是否有 "__" 分隔的对象数组字段 (field-name__0__subkey)
+  const hasObjectItems = Array.from(nestedInputs).some(el => {
+    const parts = el.id.substring(6).split('__');
+    return parts.length >= 3;
+  });
+  if (hasObjectItems) {
+    // 对象数组：按 idx 分组收集
     const byIdx = {};
-    subkeys.forEach(s => {
-      const [idx, sub] = s.split(':');
+    nestedInputs.forEach(el => {
+      const parts = el.id.substring(6).split('__'); // 去掉 "field-" 前缀
+      const idx = parseInt(parts[1]);
+      const subkey = parts.slice(2).join('__');
+      if (isNaN(idx) || !subkey) return;
       if (!byIdx[idx]) byIdx[idx] = {};
-      const inp = document.getElementById(`field-${name}__${idx}__${sub}`);
-      if (inp) byIdx[idx][sub] = inp.value;
-      else {
-        // 图片类型
-        const parent = document.querySelector(`[id="field-${name}__${idx}__${sub}"]`) 
-          || document.querySelector(`[id="gallery-${name}__${idx}__${sub}"]`);
-      }
+      byIdx[idx][subkey] = el.value;
     });
-    return Object.keys(byIdx).sort().map(k => byIdx[k]);
+    return Object.keys(byIdx).sort((a,b) => Number(a)-Number(b)).map(k => byIdx[k]);
   } else {
-    // 简单数组
+    // 简单数组: field-{name}__{idx}
     let idx = 0;
     while (true) {
       const inp = document.getElementById(`field-${name}__${idx}`);
@@ -852,9 +876,14 @@ function parseYamlSimple(text) {
           const itemMatch = l.match(/^\s*-\s*(.*)$/);
           if (itemMatch) {
             const itemVal = itemMatch[1].trim();
-            if (itemVal === '' || itemVal.startsWith('#')) {
+            // 检测是否为行内对象起始 (例如 - name: Baseball Hat)
+            const inlineKv = itemVal.match(/^([a-zA-Z_][\w\-]*):\s*(.*)$/);
+            if (itemVal === '' || itemVal.startsWith('#') || inlineKv) {
               // 对象数组
               const obj = {};
+              if (inlineKv) {
+                obj[inlineKv[1]] = parseYamlValue(inlineKv[2]);
+              }
               let k = j + 1;
               while (k < lines.length) {
                 const ol = lines[k];
@@ -920,20 +949,22 @@ function serializeYamlKeyValue(key, value, indent) {
   if (Array.isArray(value)) {
     if (value.length === 0) return '';  // 空数组跳过
     let out = `${keyLine}\n`;
+    const itemSp = '  '.repeat(indent + 1);  // 数组项缩进比父级多一级
     for (const item of value) {
       if (typeof item === 'object' && item !== null) {
-        out += `${sp}- `;
+        out += `${itemSp}- `;
         const entries = Object.entries(item);
         if (entries.length === 0) { out += '\n'; continue; }
         entries.forEach(([ek, ev], idx) => {
           if (idx === 0) {
             out += serializeYamlKeyValue(ek, ev, 0).replace(/^/, '').replace(/\n$/, '\n');
           } else {
-            out += serializeYamlKeyValue(ek, ev, indent + 1).replace(/^  /, sp + '  ');
+            // 后续子字段与首个字段对齐（在 "- " 之后）
+            out += serializeYamlKeyValue(ek, ev, 0).replace(/^/, itemSp + '  ');
           }
         });
       } else {
-        out += `${sp}- ${yamlEscape(item)}\n`;
+        out += `${itemSp}- ${yamlEscape(item)}\n`;
       }
     }
     return out;

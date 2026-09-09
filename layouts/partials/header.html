@@ -1,9 +1,8 @@
 <header class="site-header">
   <div class="container header-inner">
     <div class="logo">
-      {{ $home := .Site.GetPage "/" }}
       {{ $logoText := .Site.Params.logoText }}
-      {{ if and $home $home.Params.logo_text }}{{ $logoText = $home.Params.logo_text }}{{ end }}
+      {{ with .Site.Home.Params.logo_text }}{{ $logoText = . }}{{ end }}
       <a href="{{ partial "safe-url.html" (dict "path" "/" "kind" "url") }}">{{ $logoText }}</a>
     </div>
     <nav class="main-nav">

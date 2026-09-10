@@ -2,7 +2,7 @@ backend:
   name: github
   repo: nichole520/hat-factory-website
   branch: main
-  site_url: https://nichole520.github.io/hat-factory-website/
+  site_url: https://zanuea.com/
   base_url: https://ubiquitous-gnome-215642.netlify.app
   auth_endpoint: auth
 

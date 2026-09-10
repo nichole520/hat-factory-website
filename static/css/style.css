@@ -189,18 +189,20 @@ ul, ol {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 40px;
+  flex-wrap: nowrap;
+  gap: 12px;
 }
 
 .category-item {
   text-align: center;
-  width: 150px;
+  flex: 1 1 0;
+  min-width: 0;
 }
 
 .category-circle {
-  width: 150px;
-  height: 150px;
+  width: 100%;
+  max-width: 140px;
+  aspect-ratio: 1/1;
   border-radius: 50%;
   background-color: #1a1a1a;
   overflow: hidden;

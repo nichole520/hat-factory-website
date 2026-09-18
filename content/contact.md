@@ -1,8 +1,7 @@
 ---
 type: contact
 title: Contact Us
-phone: 0086-
-email: sales@hatfactory.com
-address: "Room 301, Building 6, Industry Road, District, City, China."
-website: www.hatfactory.com
+phone: +86 19075317950
+email: penny@zanuea.com
+website: zanuea.com
 ---

@@ -1,4 +1,4 @@
 ---
 title: Trucker Hat
-image: /images/-----20260909002848-1788886544605.jpg
+image: /images/-----202610092318091-1791561493921.jpg
 ---

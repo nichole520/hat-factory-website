@@ -7,7 +7,7 @@ banner_image: /images/banner-1788974647918.jpg
 categories:
   - name: Baseball Hat
     url: /products/baseball-hat/
-    image: /images/1-1-.jpg
+    image: /images/baseball-1791559315379.jpg
   - name: Bucket Hat
     url: /products/bucket-hat/
     image: /images/1-2-.jpg

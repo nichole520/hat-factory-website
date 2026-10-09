@@ -1,6 +1,4 @@
 ---
-title: B-002
+title: Visot Hat
 image: /images/9-1-.jpg
-description:
-body:
 ---

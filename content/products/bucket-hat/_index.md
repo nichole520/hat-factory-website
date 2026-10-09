@@ -1,4 +1,4 @@
 ---
 title: Bucket Hat
-image: /images/-----20260909002848-1788885101455.jpg
+image: /images/bucket-1791561216349.jpg
 ---

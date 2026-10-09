@@ -20,14 +20,7 @@ collections:
           - {label: "Title", name: "title", widget: "string"}
           - {label: "Banner Title", name: "banner_title", widget: "string"}
           - {label: "Banner Subtitle", name: "banner_subtitle", widget: "string"}
-          - label: "Categories"
-            name: "categories"
-            widget: "list"
-            fields:
-              - {label: "Name", name: "name", widget: "string"}
-              - {label: "URL", name: "url", widget: "string"}
-              - {label: "Image", name: "image", widget: "image", required: false}
-
+          - {label: "Banner Image", name: "banner_image", widget: "image", required: false}
       - label: "About"
         name: "about"
         file: "content/about.md"

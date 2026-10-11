@@ -1,5 +1,6 @@
 ---
 type: about
+title: "About Us"
 banner_title: "Hat Factory, Quality First!"
 banner_subtitle: Your Golden Supplier for Headwear
 tab1_title: Company Profile

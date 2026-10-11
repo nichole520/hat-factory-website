@@ -1,4 +1,4 @@
 ---
-title: "Dad Hat"
-image: "/images/1-4-.jpg"
+title: Dad Hat
+image: /images/dad-1791732878965.jpg
 ---

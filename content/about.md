@@ -23,7 +23,7 @@ tab3_images:
     caption: Factory View 2
   - src: ""
     caption: Factory View 3
-  - src: ""
+  - src: /images/-----20261011234519-1791736082183.jpg
     caption: Factory View 4
   - src: ""
     caption: Factory View 5

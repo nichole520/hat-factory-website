@@ -578,6 +578,7 @@ function openEditor({title, fields, fm, body, saveFn}) {
 let currentEditorSave = null;
 function closeEditor() {
   document.getElementById('editorOverlay').classList.remove('active');
+  document.getElementById('editorPanel').innerHTML = '';
   currentEditorSave = null;
 }
 

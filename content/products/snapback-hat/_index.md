@@ -1,4 +1,4 @@
 ---
-title: "Snapback Hat"
-image: "/images/1-6-.jpg"
+title: Snapback Hat
+image: /images/snapback-1791732931668.jpg
 ---

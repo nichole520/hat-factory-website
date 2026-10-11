@@ -523,12 +523,33 @@ ul, ol {
   border-bottom: 1px solid #eee;
   display: flex;
   gap: 20px;
+  align-items: flex-start;
+}
+
+.news-thumb {
+  flex-shrink: 0;
+  width: 160px;
+  height: 100px;
+  border-radius: 8px;
+  overflow: hidden;
+  display: block;
+}
+
+.news-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.news-body {
+  flex: 1;
+  min-width: 0;
 }
 
 .news-date {
-  min-width: 100px;
   font-size: 13px;
   color: #999;
+  margin-bottom: 6px;
 }
 
 .news-title {

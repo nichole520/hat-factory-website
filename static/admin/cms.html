@@ -170,7 +170,7 @@ const COLLECTION_MAP = {
   'about':        { type: 'single',   label: '关于 About',     file: 'content/about.md' },
   'contact':      { type: 'single',   label: '联系 Contact',   file: 'content/contact.md' },
   'footer':       { type: 'single',   label: '页脚 Footer',    file: 'content/footer.md' },
-  'news':         { type: 'folder',   label: '新闻 News',      folder: 'content/news',           fields: ['title','date','body'] },
+  'news':         { type: 'folder',   label: '新闻 News',      folder: 'content/news',           fields: ['title','date','image','body'] },
   'baseball-hat': { type: 'folder',   label: 'Baseball Hat',   folder: 'content/products/baseball-hat', fields: ['title','image','gallery','description','body'] },
   'bucket-hat':   { type: 'folder',   label: 'Bucket Hat',     folder: 'content/products/bucket-hat',   fields: ['title','image','gallery','description','body'] },
   'trucker-hat':  { type: 'folder',   label: 'Trucker Hat',    folder: 'content/products/trucker-hat',  fields: ['title','image','gallery','description','body'] },
@@ -374,15 +374,25 @@ function renderListItems(name, arr) {
   const list = arr || [];
   const container = document.getElementById('list-'+name);
   if (!container) return;
+  // 收集所有项的字段并集，确保每个项都显示完整字段
+  const allKeys = [];
+  const keySet = new Set();
+  for (const it of list) {
+    if (typeof it === 'object' && it !== null) {
+      for (const k of Object.keys(it)) {
+        if (!keySet.has(k)) { allKeys.push(k); keySet.add(k); }
+      }
+    }
+  }
   container.innerHTML = list.map((item, i) => {
     if (typeof item === 'object' && item !== null) {
-      // 对象数组：渲染子字段
+      // 对象数组：渲染子字段（使用字段并集，缺失的字段填空字符串）
       return `<div class="card" style="padding:12px; margin-bottom:8px; border:1px solid #e6e6e6;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
           <strong style="font-size:13px;">第 ${i+1} 项</strong>
           <button class="btn btn-danger" onclick="removeListItem('${name}',${i})" style="padding:4px 10px; font-size:12px;">删除</button>
         </div>
-        ${Object.entries(item).map(([k,v]) => renderField(name+'__'+i+'__'+k, v)).join('')}
+        ${allKeys.map(k => renderField(name+'__'+i+'__'+k, item[k] !== undefined ? item[k] : '')).join('')}
       </div>`;
     }
     return `<div style="display:flex; gap:8px; margin-bottom:8px;">
@@ -394,18 +404,21 @@ function renderListItems(name, arr) {
 function addListItem(name) {
   try {
     const currentArr = collectNestedList(name);
-    // 判断数组项类型，并从已有项推断字段结构
+    // 判断数组项类型，并从已有项推断字段结构（收集所有项的字段并集）
     let isObjectArray = false;
     let templateKeys = [];
-    if (currentArr.length > 0 && typeof currentArr[0] === 'object' && currentArr[0] !== null) {
-      isObjectArray = true;
-      templateKeys = Object.keys(currentArr[0]);
-    } else {
-      const arr = listDataMap[name] || [];
-      if (arr.length > 0 && typeof arr[0] === 'object' && arr[0] !== null) {
+    const seenKeys = new Set();
+    const allItems = currentArr.length > 0 ? currentArr : (listDataMap[name] || []);
+    for (const it of allItems) {
+      if (typeof it === 'object' && it !== null) {
         isObjectArray = true;
-        templateKeys = Object.keys(arr[0]);
+        Object.keys(it).forEach(k => seenKeys.add(k));
       }
+    }
+    templateKeys = Array.from(seenKeys);
+    // 如果没有任何已有项，提供默认字段（根据列表名推断）
+    if (templateKeys.length === 0) {
+      if (name === 'tab3_images') templateKeys = ['src', 'caption'];
     }
     if (isObjectArray) {
       const newItem = {};
@@ -858,6 +871,29 @@ function parseYamlSimple(text) {
     if (simple) {
       const key = simple[1];
       let val = simple[2].trim();
+      // 块标量支持: | 或 > （含 |- >- |+ >+）
+      if (/^[|>][+-]?$/.test(val)) {
+        const blockLines = [];
+        let j = i + 1;
+        let blockIndent = null;
+        while (j < lines.length) {
+          const l = lines[j];
+          if (l.trim() === '') { blockLines.push(''); j++; continue; }
+          if (blockIndent === null) {
+            if (l.match(/^\s+/)) blockIndent = l.match(/^\s+/)[0];
+            else break;
+          } else {
+            if (!l.startsWith(blockIndent)) break;
+          }
+          blockLines.push(l.substring(blockIndent.length));
+          j++;
+        }
+        // 去掉末尾空行
+        while (blockLines.length > 0 && blockLines[blockLines.length-1] === '') blockLines.pop();
+        result[key] = blockLines.join('\n');
+        i = j;
+        continue;
+      }
       if (val === '') {
         // 可能是数组（下一行开始）
         const arr = [];
@@ -945,7 +981,7 @@ function serializeFrontmatter(fm) {
 function serializeYamlKeyValue(key, value, indent) {
   const sp = '  '.repeat(indent);
   const keyLine = `${sp}${key}:`;
-  if (value === null || value === undefined || value === '') return '';  // 返回空字符串表示跳过
+  if (value === null || value === undefined) return '';  // 返回空字符串表示跳过（空字符串保留）
   if (Array.isArray(value)) {
     if (value.length === 0) return '';  // 空数组跳过
     let out = `${keyLine}\n`;
@@ -956,11 +992,12 @@ function serializeYamlKeyValue(key, value, indent) {
         const entries = Object.entries(item);
         if (entries.length === 0) { out += '\n'; continue; }
         entries.forEach(([ek, ev], idx) => {
+          // 数组对象项的子字段：始终保留 key，空值写为 ""
+          const valLine = `${ek}: ${yamlEscape(ev)}\n`;
           if (idx === 0) {
-            out += serializeYamlKeyValue(ek, ev, 0).replace(/^/, '').replace(/\n$/, '\n');
+            out += valLine;
           } else {
-            // 后续子字段与首个字段对齐（在 "- " 之后）
-            out += serializeYamlKeyValue(ek, ev, 0).replace(/^/, itemSp + '  ');
+            out += `${itemSp}  ${valLine}`;
           }
         });
       } else {
@@ -969,6 +1006,7 @@ function serializeYamlKeyValue(key, value, indent) {
     }
     return out;
   }
+  if (value === '') return `${keyLine} ""\n`;  // 空字符串保留为 ""
   if (typeof value === 'object' && value !== null) {
     let out = `${keyLine}\n`;
     for (const [ek, ev] of Object.entries(value)) {
@@ -983,6 +1021,11 @@ function yamlEscape(v) {
   if (typeof v === 'number') return String(v);
   const s = String(v);
   if (s === '') return '""';
+  if (s.includes('\n')) {
+    // 多行字符串用块标量 | 格式，保持换行
+    const lines = s.split('\n');
+    return '|\n' + lines.map(l => '  ' + l).join('\n');
+  }
   if (/[:#\[\]{}!&*?'",>|\n]/.test(s) || s.trim() !== s) {
     return '"' + s.replace(/\\/g, '\\\\').replace(/"/g, '\\"') + '"';
   }

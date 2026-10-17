@@ -16,26 +16,60 @@
     </div>
     <div class="contact-form">
       <h3>Send Inquiry</h3>
-      <form onsubmit="event.preventDefault(); alert('Message sent!');">
+      <form id="contactForm" action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="27b65d98-aec4-401a-a09e-6c013a472f7c">
+        <input type="hidden" name="from_name" value="zanuea.com Contact Form">
+        <input type="checkbox" name="botcheck" style="display:none !important" tabindex="-1" autocomplete="off">
         <div class="form-group">
           <label>Name</label>
-          <input type="text" required>
+          <input type="text" name="name" required>
         </div>
         <div class="form-group">
           <label>Email</label>
-          <input type="email" required>
+          <input type="email" name="email" required>
         </div>
         <div class="form-group">
           <label>Subject</label>
-          <input type="text" required>
+          <input type="text" name="subject" required>
         </div>
         <div class="form-group">
           <label>Message</label>
-          <textarea required></textarea>
+          <textarea name="message" required></textarea>
         </div>
         <button type="submit" class="btn-submit">Submit</button>
+        <p id="formResult" style="margin-top:12px;"></p>
       </form>
     </div>
   </div>
 </section>
+
+<script>
+  (function () {
+    var form = document.getElementById('contactForm');
+    if (!form) return;
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      var result = document.getElementById('formResult');
+      var btn = form.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      result.textContent = 'Sending...';
+      try {
+        var res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          body: new FormData(form)
+        });
+        var data = await res.json();
+        if (data.success) {
+          result.textContent = '✅ Thank you! Your message has been sent.';
+          form.reset();
+        } else {
+          result.textContent = '❌ ' + (data.message || 'Something went wrong. Please try again.');
+        }
+      } catch (err) {
+        result.textContent = '❌ Network error. Please try again.';
+      }
+      btn.disabled = false;
+    });
+  })();
+</script>
 {{ end }}

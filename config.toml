@@ -22,13 +22,13 @@ title = 'Hat Factory - Premium Headwear'
     weight = 21
     parent = 'Product'
   [[menu.main]]
-    name = 'Bucket Hat'
-    url = '/products/bucket-hat/'
+    name = 'Trucker Hat'
+    url = '/products/trucker-hat/'
     weight = 22
     parent = 'Product'
   [[menu.main]]
-    name = 'Trucker Hat'
-    url = '/products/trucker-hat/'
+    name = 'Snapback Hat'
+    url = '/products/snapback-hat/'
     weight = 23
     parent = 'Product'
   [[menu.main]]
@@ -42,8 +42,8 @@ title = 'Hat Factory - Premium Headwear'
     weight = 25
     parent = 'Product'
   [[menu.main]]
-    name = 'Snapback Hat'
-    url = '/products/snapback-hat/'
+    name = 'Bucket Hat'
+    url = '/products/bucket-hat/'
     weight = 26
     parent = 'Product'
   [[menu.main]]

@@ -1,8 +1,8 @@
 ---
 type: about
 title: About Us
-banner_title: "Hat Factory, Quality First!"
-banner_subtitle: Your Golden Supplier for Headwear
+banner_title: ""
+banner_subtitle: ""
 banner_image: /images/banner-1792241036514.jpg
 tab1_title: Company Profile
 tab1_content: |

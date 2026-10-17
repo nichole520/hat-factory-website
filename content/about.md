@@ -3,7 +3,7 @@ type: about
 title: About Us
 banner_title: "Hat Factory, Quality First!"
 banner_subtitle: Your Golden Supplier for Headwear
-banner_image: ""
+banner_image: /images/banner-1792241036514.jpg
 tab1_title: Company Profile
 tab1_content: |
   Our company is a professional hat manufacturer and exporter specializing in all kinds of headwear. We produce baseball caps, bucket hats, trucker caps, dad hats, visors, snapback hats, and beanies.

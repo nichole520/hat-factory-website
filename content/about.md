@@ -15,20 +15,20 @@ tab2_content: |
   Teamwork and continuous improvement are at the heart of our operations. Every member of our team is dedicated to producing headwear that meets the highest international standards.
 tab3_title: Factory Views
 tab3_images:
-  - src: ""
+  - src: /images/-----20261017202056-1792239835390.jpg
     caption: Factory View 1
-  - src: /images/-----20260909002848-1788893482064.jpg
+  - src: /images/-----20261017202137-1792239850435.jpg
     caption: Factory View 2
-  - src: ""
+  - src: /images/-----20261017202149-1792239864328.jpg
     caption: Factory View 3
-  - src: /images/-----20261011234519-1791736082183.jpg
+  - src: /images/-----20261017202200-1792239877592.jpg
     caption: Factory View 4
-  - src: ""
+  - src: /images/-----20261017202206-1792239889397.jpg
     caption: Factory View 5
-  - src: ""
+  - src: /images/-----20261017202210-1792239901415.jpg
     caption: Factory View 6
-  - src: ""
+  - src: /images/-----20261017202239-1792239920068.jpg
     caption: Factory View 7
-  - src: ""
+  - src: /images/-----20261017202612-1792239984393.jpg
     caption: Factory View 8
 ---

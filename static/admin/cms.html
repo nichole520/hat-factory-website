@@ -181,6 +181,7 @@ const COLLECTION_MAP = {
 };
 let currentCollection = null;
 let currentItemFile = null;
+let currentOriginalFm = {};  // 当前编辑项的原始 frontmatter，用于判断哪些空字段应保留
 // 存储列表字段的原始数据，避免通过 HTML 属性传递 JSON 的转义问题
 const listDataMap = {};
 
@@ -266,6 +267,7 @@ async function openCollection(key) {
 // ====== 渲染单文件编辑器 ======
 function renderSingleEditor(key, config, rawContent) {
   const parsed = parseFrontmatter(rawContent);
+  currentOriginalFm = parsed.fm || {};
   const fields = [];
   for (const [k, v] of Object.entries(parsed.fm)) {
     fields.push({ name: k, value: v });
@@ -533,6 +535,7 @@ async function editFolderItem(key, path) {
   try {
     const raw = await ghGetContent(path, true);
     const parsed = parseFrontmatter(raw);
+    currentOriginalFm = parsed.fm || {};
     const config = COLLECTION_MAP[key];
     openEditor({
       title: `编辑 - ${parsed.fm.title || '新项目'}`,
@@ -546,6 +549,7 @@ async function editFolderItem(key, path) {
 }
 function newFolderItem(key) {
   const config = COLLECTION_MAP[key];
+  currentOriginalFm = {};
   openEditor({
     title: `新建 ${config.label}`,
     fields: config.fields,
@@ -730,7 +734,7 @@ async function saveSingle(key) {
     const fm = collectFormValues();
     const body = document.getElementById('bodyField')?.value || '';
     const config = COLLECTION_MAP[key];
-    const content = serializeFrontmatter(fm) + (body ? '\n' + body : '');
+    const content = serializeFrontmatter(fm, currentOriginalFm) + (body ? '\n' + body : '');
     const sha = await ghGetFileSha(config.file);
     await ghApi(`repos/${GH_REPO}/contents/${config.file}`, 'PUT', {
       message: `update ${key}: ${config.label}`,
@@ -749,7 +753,7 @@ async function saveFolderItem(key, path, isNew) {
   try {
     const fm = collectFormValues();
     const body = document.getElementById('bodyField')?.value || '';
-    const content = serializeFrontmatter(fm) + (body ? '\n' + body : '');
+    const content = serializeFrontmatter(fm, currentOriginalFm) + (body ? '\n' + body : '');
     const config = COLLECTION_MAP[key];
     let targetPath = path;
     if (isNew) {
@@ -968,12 +972,14 @@ function parseYamlValue(v) {
   if (!isNaN(Number(s)) && s !== '' && /^-?\d+(\.\d+)?$/.test(s)) return Number(s);
   return s;
 }
-function serializeFrontmatter(fm) {
+function serializeFrontmatter(fm, originalFm = {}) {
   let out = '---\n';
   for (const [k, v] of Object.entries(fm)) {
-    // 过滤掉空值：null, undefined, 空字符串, 空数组
-    if (v === null || v === undefined || v === '') continue;
+    // 过滤掉 null/undefined 和空数组
+    if (v === null || v === undefined) continue;
     if (Array.isArray(v) && v.length === 0) continue;
+    // 空字符串：仅当该字段原本就存在于 frontmatter 时才保留（保证可编辑的空字段不消失，又不凭空新增空字段）
+    if (v === '' && !(k in originalFm)) continue;
     out += serializeYamlKeyValue(k, v, 0);
   }
   out += '---\n';

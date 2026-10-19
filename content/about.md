@@ -6,7 +6,7 @@ banner_subtitle: ""
 banner_image: /images/banner-1792241036514.jpg
 tab1_title: Company Profile
 tab1_content: |
-  Our company is a professional hat manufacturer and exporter specializing in all kinds of headwear. We produce baseball caps, bucket hats, trucker caps, dad hats, visors, snapback hats, and beanies.
+  Guangdong Zanuea company is a professional hat manufacturer and exporter specializing in all kinds of headwear. We produce baseball caps, bucket hats, trucker caps, dad hats, visors, snapback hats, and beanies.
   
   We conduct strict quality control and assurance measures to make sure the mass production is the same as pre-production samples which are confirmed by our valued customers. We keep innovating for new materials, designs, and craftsmanship.
   
